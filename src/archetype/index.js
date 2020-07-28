@@ -12,9 +12,9 @@ const validateArchetype = (archetype, validator=null) => {
         identifier,
         properties,
         variationFactors,
-        validators,
         derivedProperties,
-        deriver
+        deriver,
+        validators
     } = archetype
     //Validate identifier field.
     try {
@@ -164,4 +164,6 @@ const createArchetype = (
     return archetype
 }
 
+
+exports.validateArchetype = validateArchetype
 exports.createArchetype = createArchetype

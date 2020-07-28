@@ -1,4 +1,5 @@
 const { createArchetype } = require("./src/archetype")
+const { createItem } = require("./src/item")
 const { FIELD_TYPE, createField } = require("ffield")
 
 
@@ -18,11 +19,6 @@ const tshirtArchetype = createArchetype(
         size: FIELD_TYPE.STRING,
         colourway: FIELD_TYPE.STRING
     },
-    //Validators (optional)
-    [
-        //E.g. Item cannot be more than £100.00
-        (item) => item.priceGBP < 100.00
-    ],
     //Derived Properties (optional)
     {
         ukTotalCostGBP: FIELD_TYPE.NUMBER,
@@ -30,17 +26,27 @@ const tshirtArchetype = createArchetype(
     },
     //Deriver (optional, compulsory if deriverProperties not null)
     (item) => ({
-        ukTotalCostGBP: item.priceGBP + ukPostGBP,
-        wrldTotalCostGBP: item.priceGBP + wrldPostGBP
-    })
+        ukTotalCostGBP: (
+            item.properties.priceGBP.data + 
+            item.properties.ukPostGBP.data
+        ),
+        wrldTotalCostGBP: (
+            item.properties.priceGBP.data + 
+            item.properties.wrldPostGBP.data
+        )
+    }),
+    //Validators (optional)
+    [
+        //E.g. Item cannot be more than £100.00
+        (item) => item.properties.priceGBP.data < 100.00
+    ],
 )
 
 
 //
 
 
-console.log(tshirtArchetype)
-/*
+//console.log(tshirtArchetype)
 
 //
 
@@ -60,4 +66,5 @@ const peaceTshirt = createItem(
     }
 )
 
-*/
+console.log("\n\n")
+console.log(peaceTshirt)

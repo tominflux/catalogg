@@ -11,7 +11,8 @@ const validateItem = (item, archetype) => {
     //
     const {
         properties,
-        variations
+        variationFactors,
+        derivedProperties
     } = item
     //Validate properties
     // - Ensure it's an object.
@@ -48,59 +49,57 @@ const validateItem = (item, archetype) => {
             )
         }
     }
-    //Validate variations
+    //Validate variation factors
     // - Ensure it's an object.
-    if (typeof variations !== "object") {
+    if (typeof variationFactors !== "object") {
         throw validationErr(
-            `typeof variations is "${typeof variations}", ` +
+            `typeof variationFactors is "${typeof variationFactors}", ` +
             `expected "object".`
         )
     }
     // - Check keys match 
-    const itemVarsKeys = JSON.stringify(Object.keys(variations))
-    const archVarsKeys = JSON.stringify(Object.keys(archetype.variations))
+    const itemVarsKeys = JSON.stringify(Object.keys(variationFactors))
+    const archVarsKeys = JSON.stringify(Object.keys(archetype.variationFactors))
     if (itemVarsKeys !== archVarsKeys) {
         throw validationErr(
-            `Item variations do not match up to archetype variations.\n` +
-            `Item variations: ${itemVarsKeys}\n` +
-            `Archetype variations: ${archVarsKeys}`
+            `Item variationFactors do not match up to archetype variationFactors.\n` +
+            `Item variationFactors: ${itemVarsKeys}\n` +
+            `Archetype variationFactors: ${archVarsKeys}`
         )
     }
     // - Check each variation is an array.
-    for (const key in variations) {
-        const val = variations[key]
+    for (const key in variationFactors) {
+        const val = variationFactors[key]
         if (!Array.isArray(val)) {
             throw validationErr(
-                `variations.${key} is not an array.`
+                `variationFactors.${key} is not an array.`
             )
         }
     }
     // - Check each entry of each variation is a valid field.
-    for (const key in variations) {
-        const val = variations[key]
-        for (const entry in val) {
+    for (const key in variationFactors) {
+        const val = variationFactors[key]
+        for (const entry of val) {
             validateField(entry)
         }
     }
     // - Check each field type of each entry 
     //   matches that of the archetype.
-    for (const key in variations) {
-        const itemVal = variations[key]
-        const archVal = archetype.variations[key]
+    for (const key in variationFactors) {
+        const itemVal = variationFactors[key]
+        const archVal = archetype.variationFactors[key]
         for (const itemEntry of itemVal) {
             if (itemEntry.type !== archVal) {
                 const index = itemVal.indexOf(itemEntry)
                 throw validationErr(
-                    `Field type of variations.${key}[${index}] is ` +
+                    `Field type of variationFactors.${key}[${index}] is ` +
                     `"${itemEntry.type}" and does not entry field ` +
                     `type specified in archetype "${archVal}".`
                 )
             } 
         }
     }
-    //Run deriver
-    //& validate resulting properties
-    const derivedProperties = archetype.deriver(item)
+    //Validate derived properties.
     // - Ensure it's an object.
     if (typeof derivedProperties !== "object") {
         throw validationErr(
@@ -118,7 +117,7 @@ const validateItem = (item, archetype) => {
             `Archetype derivedProperties: ${archDerPropKeys}`
         )
     }
-    // - Check derived propeties are valid fields
+    // - Check derived properties are valid fields
     for (const key in derivedProperties) {
         const val = derivedProperties[key]
         validateField(val)
@@ -151,7 +150,7 @@ const validateItem = (item, archetype) => {
 const createItem = (
     archetype, 
     properties, 
-    variations
+    variationFactors
 ) => {
     //Perform basic validation on archetype.
     validateArchetype(archetype)
@@ -169,24 +168,24 @@ const createItem = (
     }
     // - Fieldify variation entries, assigning 
     //   field types based on archetype.
-    let itemVariations = {}
-    for (const key in variations) {
-        const variation = variations[key]
-        const fieldType = archetype.variations[key]
+    let itemVariationFactors = {}
+    for (const key in variationFactors) {
+        const variation = variationFactors[key]
+        const fieldType = archetype.variationFactors[key]
         const fieldArray = []
         for (const entry of variation) {
             const field = createField(fieldType, entry)
             fieldArray.push(field)
         }
-        itemVariations = {
-            ...itemVariations,
+        itemVariationFactors = {
+            ...itemVariationFactors,
             [key]: fieldArray
         }
     }
     // - Build intermediate item.
     let item = {
         properties: itemProperties,
-        variations: itemVariations
+        variationFactors: itemVariationFactors
     }
     // - If derived properties exist in archetype, derive them,
     //   and then fieldify them.
