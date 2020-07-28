@@ -23,7 +23,12 @@ const tshirtArchetype = createArchetype(
         //E.g. Item cannot be more than £100.00
         (item) => item.priceGBP < 100.00
     ],
-    //Derivations (optional)
+    //Derived Properties (optional)
+    {
+        ukTotalCostGBP: FIELD_TYPE.NUMBER,
+        wrldTotalCostGBP: FIELD_TYPE.NUMBER
+    },
+    //Deriver (optional, compulsory if deriverProperties not null)
     (item) => ({
         ukTotalCostGBP: item.priceGBP + ukPostGBP,
         wrldTotalCostGBP: item.priceGBP + wrldPostGBP

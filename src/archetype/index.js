@@ -13,7 +13,8 @@ const validateArchetype = (archetype, validator=null) => {
         properties,
         variationFactors,
         validators,
-        derivations
+        derivedProperties,
+        deriver
     } = archetype
     //Validate identifier field.
     try {
@@ -72,6 +73,41 @@ const validateArchetype = (archetype, validator=null) => {
             }
         }
     }
+    //If derived properties supplied...
+    if (derivedProperties !== null) {
+        //Make sure each property of derivedProperties
+        //is a valid FIELD_TYPE.
+        for (const key in derivedProperties) {
+            const val = derivedProperties[key]
+            if (typeof val !== "string") {
+                throw validationErr(
+                    `typeof derivedProperties.${key} is "${typeof val}", ` +
+                    `expected "string".`
+                )
+            }
+            if (!includes(FIELD_TYPE, val)) {
+                throw validationErr(
+                    `derivedProperties.${key} [="${val}"] is not a ` +
+                    `valid FIELD_TYPE.` 
+                )
+            }
+        }
+        //Make sure deriver is not null.
+        if (deriver === null) {
+            throw validationErr(
+                `deriver is null, non-null value expected ` +
+                `when derivedProperties are given.`
+            )
+        }
+        //Make sure deriver is a function.
+        const type = typeof deriver
+        if (type !== "function") {
+            throw validationErr(
+                `typeof deriver is "${type}", ` +
+                `expected "function".`
+            )
+        }
+    }
     //If validators supplied...
     if (validators !== null) {
         //Make sure it is an array.
@@ -92,17 +128,6 @@ const validateArchetype = (archetype, validator=null) => {
             }
         }
     }
-    //If derivations supplied...
-    if (derivations !== null) {
-        //Make sure it is a function.
-        const type = typeof derivations
-        if (type !== "function") {
-            throw validationErr(
-                `typeof derivations is "${type}", ` +
-                `expected "function".`
-            )
-        }
-    }
 }
 
 
@@ -112,8 +137,9 @@ const createArchetype = (
     identifier,
     properties, 
     variationFactors=null,
-    validators=null,
-    derivations=null
+    derivedProperties=null,
+    deriver=null,
+    validators=null
 ) => {
     const creationErr = (msg) => new Error(
         `Archetype creation error\n` +
@@ -124,8 +150,9 @@ const createArchetype = (
         identifier,
         properties,
         variationFactors,
-        validators,
-        derivations
+        derivedProperties,
+        deriver,
+        validators
     }
     //Perform basic validation of archetype.
     try {
