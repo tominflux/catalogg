@@ -175,16 +175,46 @@ const createItem = (
         const fieldType = archetype.variations[key]
         const fieldArray = []
         for (const entry of variation) {
-            
+            const field = createField(fieldType, entry)
+            fieldArray.push(field)
+        }
+        itemVariations = {
+            ...itemVariations,
+            [key]: fieldArray
         }
     }
-    const item = {
-        properties: properties.map(
-            (property) => {
-                const fieldType = archetype.
+    // - Build intermediate item.
+    let item = {
+        properties: itemProperties,
+        variations: itemVariations
+    }
+    // - If derived properties exist in archetype, derive them,
+    //   and then fieldify them.
+    let itemDerivedProperties = {}
+    if (archetype.derivedProperties !== null) {
+        const intermediateItem = { ...item }
+        const derivedProperties = archetype.deriver(intermediateItem)
+        for (const key in derivedProperties) {
+            const derivedProperty = derivedProperties[key]
+            const fieldType = archetype.derivedProperties[key]
+            const field = createField(fieldType, derivedProperty)
+            itemDerivedProperties = {
+                ...itemDerivedProperties,
+                [key]: field
             }
-        )
+        }
+    }
+    // - Finish building item.
+    item = {
+        ...item,
+        derivedProperties: itemDerivedProperties
     }
     //Validate item.
+    validateItem(item, archetype)
     //Return item.
+    const newItem = { ...item }
+    return newItem
 }
+
+exports.validateItem = validateItem
+exports.createItem = createItem
