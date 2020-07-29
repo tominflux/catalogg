@@ -4,8 +4,8 @@
   "description": "Back-end framework for modelling tangible item collections.",
   "main": "src/index.js",
   "dependencies": {
-    "aarketype": "^0.1.0",
-    "ffield": "^0.2.1",
+    "aarketype": "^0.1.2",
+    "ffield": "^0.2.5",
     "fs-extra": "^9.0.1"
   },
   "devDependencies": {
