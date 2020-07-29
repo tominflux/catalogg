@@ -4,9 +4,13 @@
   "description": "Back-end framework for modelling tangible item collections.",
   "main": "src/index.js",
   "dependencies": {
-    "ffield": "^0.2.1"
+    "aarketype": "^0.1.0",
+    "ffield": "^0.2.1",
+    "fs-extra": "^9.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^8.0.1"
+  },
   "scripts": {
     "test": "npx mocha"
   },

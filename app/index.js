@@ -1,8 +1,5 @@
 const { tshirtArchetype } = require("./archetypes/tshirt")
-const { createItem, validateItem } = require("./src/item")
-const { FIELD_TYPE, createField } = require("ffield")
-
-
+const { createItem, validateItem } = require("aarketype")
 
 const peaceTshirt = createItem(
     tshirtArchetype,

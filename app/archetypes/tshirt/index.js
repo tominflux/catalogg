@@ -1,4 +1,4 @@
-const { createArchetype } = require("../../../src/archetype")
+const { createArchetype } = require("aarketype")
 const { FIELD_TYPE, createField } = require("ffield")
 
 const tshirtArchetype = createArchetype(
