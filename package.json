@@ -11,7 +11,8 @@
   "devDependencies": {
     "dotenv": "^8.2.0",
     "mocha": "^8.0.1",
-    "mongodb": "^3.6.0"
+    "mongodb": "^3.6.0",
+    "yargs": "^15.4.1"
   },
   "scripts": {
     "test": "npx mocha"

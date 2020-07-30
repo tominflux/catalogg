@@ -33,38 +33,52 @@ const mongoConnect = (options) => (
 //////////////
 //////////////
 
+const dbCollectionName = (catalogueName, collectionName) => (
+    `catalogg__${catalogueName}__${collectionName}`
+)
 
-const createCollection = (database, name) => new Promise(
+const createCollection = (
+    database, catalogueName, collectionName
+) => new Promise(
     (resolve, reject) => database.createCollection(
-        name, (err) => {
+        dbCollectionName(catalogueName, collectionName), 
+        (err) => {
             if (err) {
                 reject(err.message)
                 return
             }
             console.log(
-                `   Collection "${name}" created.`
+                `   Collection "${collectionName}" created in `
+                `   catalogue "${catalogueName}".`
             )
             resolve()
         }
     )
 )
 
-const deleteCollection = (database, name) => new Promise(
-    (resolve, reject) => database.collection(name).drop(
-        (err, delOk) => {
-            if (err) {
-                reject(err.message)
-                return
+const deleteCollection = (
+    database, catalogueName, collectionName
+) => new Promise(
+    (resolve, reject) => (
+        database.collection(
+            dbCollectionName(catalogueName, collectionName)
+        ).drop(
+            (err, delOk) => {
+                if (err) {
+                    reject(err.message)
+                    return
+                }
+                if (delOk) {
+                    console.log(
+                        `   Collection "${collectionName}" deleted `
+                        `   from catalogue "${catalogueName}".`
+                    )
+                    resolve()
+                } else {
+                    reject("Could not delete.")
+                }
             }
-            if (delOk) {
-                console.log(
-                    `   Collection "${name}" deleted.`
-                )
-                resolve()
-            } else {
-                reject("Could not delete.")
-            }
-        }
+        )
     )
 )
 
@@ -79,7 +93,9 @@ const createCatalogue = async (options, lockedCatalogue) => {
     const { connection, database } = await mongoConnect(options)
     //Create Collections.
     for (const collection of lockedCatalogue.collections) {
-        await createCollection(database, collection.name)
+        await createCollection(
+            database, lockedCatalogue.name, collection.name
+        )
     }
     //Close Connection
     connection.close()
@@ -89,18 +105,21 @@ const resolveCatalogueDiff = async (options, catalogueDiff) => {
     //Open Connection
     console.log("Connecting to MongoDB database...\n")
     const { connection, database } = await mongoConnect(options)
-    console.log(catalogueDiff)
     const {
         newCollectionNames,
         redundantCollectionNames
     } = catalogueDiff.collectionsDiff
     //Create New Collections.
     for (const collectionName of newCollectionNames) {
-        await createCollection(database, collectionName)
+        await createCollection(
+            database, catalogueDiff.catalogueName, collectionName
+        )
     }
     //Delete Redundant Collections
     for (const collectionName of redundantCollectionNames) {
-        await deleteCollection(database, collectionName)
+        await deleteCollection(
+            database, catalogueDiff.catalogueName, collectionName
+        )
     }
     //Close Connection
     connection.close()
@@ -112,6 +131,9 @@ const deleteCatalogue = async (options, lockedCatalogue) => {
     const { connection, database } = await mongoConnect(options)
     //Delete Collections.
     for (const collection of lockedCatalogue.collections) {
+        await deleteCollection(
+            database, lockedCatalogue.name, collection.name
+        )
         await deleteCollection(database, collection.name)
     }
     //Close Connection

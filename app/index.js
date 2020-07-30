@@ -1,10 +1,8 @@
 require('dotenv').config()
 const fs = require("fs-extra")
 const { tshirtArchetype } = require("./archetypes/tshirt")
-const { lockCatalogue } = require("../lib/lock")
 const { createCatologue } = require("../lib")
-const { createLockedCatalogue, readLockedCatalogue, updateLockedCatalogue, deleteLockedCatalogue } = require("../lib/catalogueOperator")
-const { getCatalogueDiff } = require("../lib/diff")
+const { syncLockedCatalogue } = require("../lib/catalogueOperator")
 const { createMongoOperator } = require('./mongoOperator')
 
 /*
@@ -54,7 +52,7 @@ const dataOperator = createMongoOperator(
 
 
 const test = async () => {
-    updateLockedCatalogue(catalogue, dataOperator)
+    syncLockedCatalogue(catalogue, dataOperator)
 }
 
 test()
