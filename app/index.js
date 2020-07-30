@@ -3,6 +3,7 @@ const { createItem, validateItem } = require("aarketype")
 const { createCollection } = require("../lib/collection")
 const { mapifyArchetypes } = require("../lib/misc")
 const { lockifyCollection } = require("../lib/collectionOperator")
+const { lockCatalogue } = require("../lib/lock")
 
 /*
 const peaceTshirt = createItem(
@@ -25,13 +26,6 @@ validateItem(peaceTshirt, tshirtArchetype)
 console.log(peaceTshirt)
 */
 
-const myCollection = createCollection(
-    "myCollection",
-    mapifyArchetypes([tshirtArchetype])
-)
 
-const lockedCollection = lockifyCollection(myCollection)
+const lockedCatalogue = lockCatalogue()
 
-console.log(
-    JSON.stringify(lockedCollection)
-)
