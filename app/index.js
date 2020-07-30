@@ -1,8 +1,9 @@
+require('dotenv').config()
 const fs = require("fs-extra")
 const { tshirtArchetype } = require("./archetypes/tshirt")
 const { lockCatalogue } = require("../lib/lock")
 const { createCatologue } = require("../lib")
-const { createLockedCatalogue, readLockedCatalogue } = require("../lib/catalogueOperator")
+const { createLockedCatalogue, readLockedCatalogue, updateLockedCatalogue } = require("../lib/catalogueOperator")
 const { getCatalogueDiff } = require("../lib/diff")
 
 /*
@@ -29,7 +30,7 @@ console.log(peaceTshirt)
 const catalogue = createCatologue(
     "myCatalogue",
     [ tshirtArchetype ],
-    [ "myCollection", "newCollection" ]
+    [ "myCollection" ]
 )
 
 
@@ -56,6 +57,13 @@ const test = async () => {
         )
     )
     
+    updateLockedCatalogue(catalogue, 
+        {
+            createCatalogue: () => {},
+            resolveCatalogueDiff: () => {},
+            deleteCatalogue: () => {}
+        }
+    )
 }
 
 test()
