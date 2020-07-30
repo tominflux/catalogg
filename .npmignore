@@ -1,4 +1,5 @@
 app/
+catalogue-lock.json
 
 # Logs
 logs
