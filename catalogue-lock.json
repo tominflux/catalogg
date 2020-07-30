@@ -1,1 +1,0 @@
-{"name":"myCatalogue","archetypes":[{"identifier":{"type":"STRING","data":"tshirt"},"properties":{"name":"STRING","priceGBP":"NUMBER","description":"STRING","ukPostGBP":"NUMBER","wrldPostGBP":"NUMBER"},"variationFactors":{"size":"STRING","colourway":"STRING"},"derivedProperties":{"ukTotalCostGBP":"NUMBER","wrldTotalCostGBP":"NUMBER"}}],"collections":[{"name":"myCollection"}]}
