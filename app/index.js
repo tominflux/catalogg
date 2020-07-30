@@ -3,8 +3,9 @@ const fs = require("fs-extra")
 const { tshirtArchetype } = require("./archetypes/tshirt")
 const { lockCatalogue } = require("../lib/lock")
 const { createCatologue } = require("../lib")
-const { createLockedCatalogue, readLockedCatalogue, updateLockedCatalogue } = require("../lib/catalogueOperator")
+const { createLockedCatalogue, readLockedCatalogue, updateLockedCatalogue, deleteLockedCatalogue } = require("../lib/catalogueOperator")
 const { getCatalogueDiff } = require("../lib/diff")
+const { createMongoOperator } = require('./mongoOperator')
 
 /*
 const peaceTshirt = createItem(
@@ -45,25 +46,15 @@ createLockedCatalogue(
     }
 )
 */
+
+const dataOperator = createMongoOperator(
+    process.env.MONGO_CONNECTION,
+    process.env.MONGO_DATABASE
+)
+
+
 const test = async () => {
-    const currentLockedCatalogue = await readLockedCatalogue(catalogue)
-    const newLockedCatalogue = lockCatalogue(catalogue)
-    /*console.log(currentLockedCatalogue)
-    console.log(newLockedCatalogue)*/
-    
-    console.log(
-        getCatalogueDiff(
-            currentLockedCatalogue, newLockedCatalogue
-        )
-    )
-    
-    updateLockedCatalogue(catalogue, 
-        {
-            createCatalogue: () => {},
-            resolveCatalogueDiff: () => {},
-            deleteCatalogue: () => {}
-        }
-    )
+    updateLockedCatalogue(catalogue, dataOperator)
 }
 
 test()
