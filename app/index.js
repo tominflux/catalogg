@@ -1,9 +1,9 @@
+const fs = require("fs-extra")
 const { tshirtArchetype } = require("./archetypes/tshirt")
-const { createItem, validateItem } = require("aarketype")
-const { createCollection } = require("../lib/collection")
-const { mapifyArchetypes } = require("../lib/misc")
-const { lockifyCollection } = require("../lib/collectionOperator")
 const { lockCatalogue } = require("../lib/lock")
+const { createCatologue } = require("../lib")
+const { createLockedCatalogue, readLockedCatalogue } = require("../lib/catalogueOperator")
+const { getCatalogueDiff } = require("../lib/diff")
 
 /*
 const peaceTshirt = createItem(
@@ -26,6 +26,36 @@ validateItem(peaceTshirt, tshirtArchetype)
 console.log(peaceTshirt)
 */
 
+const catalogue = createCatologue(
+    "myCatalogue",
+    [ tshirtArchetype ],
+    [ "myCollection", "newCollection" ]
+)
 
-const lockedCatalogue = lockCatalogue()
 
+
+/*
+createLockedCatalogue(
+    catalogue, 
+    {
+        createCatalogue: () => {},
+        resolveCatalogueDiff: () => {},
+        deleteCatalogue: () => {}
+    }
+)
+*/
+const test = async () => {
+    const currentLockedCatalogue = await readLockedCatalogue(catalogue)
+    const newLockedCatalogue = lockCatalogue(catalogue)
+    /*console.log(currentLockedCatalogue)
+    console.log(newLockedCatalogue)*/
+    
+    console.log(
+        getCatalogueDiff(
+            currentLockedCatalogue, newLockedCatalogue
+        )
+    )
+    
+}
+
+test()
