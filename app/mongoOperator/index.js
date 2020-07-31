@@ -1,5 +1,7 @@
 const mongo = require("mongodb")
 const { createDataOperator } = require("../../lib/dataOperator")
+const { dataOperator, catalogue } = require("..")
+const { getVariationObjs } = require("../../lib/itemOperator")
 
 
 //////////////
@@ -87,6 +89,29 @@ const deleteCollection = (
     )
 )
 
+const insertIntoCollection = (
+    database, catalogueName, collectionName, documents
+) => new Promise(
+    (resolve, reject) => (
+        database.collection(
+            dbCollectionName(catalogueName, collectionName)
+        ).insertMany(
+            documents, 
+            (err, res) => {
+                if (err) {
+                    reject(
+                        `   Could not insert documents into collection ` +
+                        `"${collectionName}" of catalogue "${catalogueName}"` +
+                        `... ${err.message}`
+                    )
+                    return
+                }
+                resolve()
+            }
+        )
+    )
+)
+
 
 //////////////
 //////////////
@@ -149,11 +174,33 @@ const deleteCatalogue = async (options, lockedCatalogue) => {
 //////////////
 
 
-const createItem = async (options) => {
+const createItem = async (
+    options, 
+    catalogueName, 
+    collectionName, 
+    lockedItem,
+    variationObjs
+) => {
     //Open Connection
     console.log("Connecting to MongoDB database...\n")
     const { connection, database } = await mongoConnect(options)
-    //Create item
+    //Iterate through every permutation of
+    //variations that exists for item.
+    //And create a document for each.
+    const composeDocument = (variationObj) => ({
+        ...lockedItem,
+        ...variationObj,
+        stock: 0
+    })
+    const documents = variationObjs.map(
+        variationObj => composeDocument(variationObj)
+    )
+    //Insert documents into db collection.
+    await insertIntoCollection(
+        database, catalogueName, collectionName, documents
+    )
+    //Close Connection
+    connection.close()
 } 
 
 
@@ -164,17 +211,32 @@ const createItem = async (options) => {
 const createMongoOperator = (url, database) => {
     const options = { url, database }
     const dataOperator = createDataOperator(
+        //CATALOGUE
         //Create Catalogue
-        lockedCatalogue => createCatalogue(
+        async lockedCatalogue => await createCatalogue(
             options, lockedCatalogue
         ),
         //Resolve Catalogue Diff
-        catalogueDiff => resolveCatalogueDiff(
+        async catalogueDiff => await resolveCatalogueDiff(
             options, catalogueDiff
         ),
         //Delete Catalogue
-        lockedCatalogue => deleteCatalogue(
+        async lockedCatalogue => await deleteCatalogue(
             options, lockedCatalogue
+        ),
+        //ITEM
+        //Create Item
+        async (
+            catalogueName, 
+            collectionName,
+            lockedItem,
+            variationObjs
+        ) => await createItem(
+            options,  
+            catalogueName, 
+            collectionName, 
+            lockedItem,
+            variationObjs
         )
     )
     return dataOperator

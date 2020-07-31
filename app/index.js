@@ -3,9 +3,12 @@ const fs = require("fs-extra")
 const { tshirtArchetype } = require("./archetypes/tshirt")
 const { createCatologue } = require("../lib")
 const { syncLockedCatalogue } = require("../lib/catalogueOperator")
+const { createInCollection} = require("../lib/itemOperator")
 const { createMongoOperator } = require('./mongoOperator')
+const { createItem, validateItem } = require('aarketype')
+const { traverseThroughStocks, getVariationObjs } = require('../lib/itemOperator')
 
-/*
+
 const peaceTshirt = createItem(
     tshirtArchetype,
     {
@@ -23,8 +26,8 @@ const peaceTshirt = createItem(
 
 validateItem(peaceTshirt, tshirtArchetype)
 
-console.log(peaceTshirt)
-*/
+//console.log(peaceTshirt.variationFactors.size)
+
 
 const catalogue = createCatologue(
     "myCatalogue",
@@ -32,10 +35,20 @@ const catalogue = createCatologue(
     [ "myCollection" ]
 )
 
+
 const dataOperator = createMongoOperator(
     process.env.MONGO_CONNECTION,
     process.env.MONGO_DATABASE
 )
+
+const run = async () => {
+    await syncLockedCatalogue(catalogue, dataOperator)
+    createInCollection(
+        "myCatalogue", "myCollection", dataOperator, peaceTshirt
+    )
+}
+
+run()
 
 exports.catalogue = catalogue
 exports.dataOperator = dataOperator
