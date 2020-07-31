@@ -32,27 +32,10 @@ const catalogue = createCatologue(
     [ "myCollection" ]
 )
 
-
-
-/*
-createLockedCatalogue(
-    catalogue, 
-    {
-        createCatalogue: () => {},
-        resolveCatalogueDiff: () => {},
-        deleteCatalogue: () => {}
-    }
-)
-*/
-
 const dataOperator = createMongoOperator(
     process.env.MONGO_CONNECTION,
     process.env.MONGO_DATABASE
 )
 
-
-const test = async () => {
-    syncLockedCatalogue(catalogue, dataOperator)
-}
-
-test()
+exports.catalogue = catalogue
+exports.dataOperator = dataOperator

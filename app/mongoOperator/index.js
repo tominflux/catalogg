@@ -48,8 +48,8 @@ const createCollection = (
                 return
             }
             console.log(
-                `   Collection "${collectionName}" created in `
-                `   catalogue "${catalogueName}".`
+                `   Collection "${collectionName}" created in ` +
+                `catalogue "${catalogueName}".`
             )
             resolve()
         }
@@ -65,18 +65,23 @@ const deleteCollection = (
         ).drop(
             (err, delOk) => {
                 if (err) {
-                    reject(err.message)
+                    reject(
+                        `Could not delete collection "${collectionName}": ` +
+                        `${err.message}.`
+                    )
                     return
                 }
                 if (delOk) {
                     console.log(
-                        `   Collection "${collectionName}" deleted `
-                        `   from catalogue "${catalogueName}".`
+                        `   Collection "${collectionName}" deleted ` +
+                        `from catalogue "${catalogueName}".`
                     )
                     resolve()
+                    return 
                 } else {
                     reject("Could not delete.")
                 }
+                return
             }
         )
     )
@@ -134,11 +139,22 @@ const deleteCatalogue = async (options, lockedCatalogue) => {
         await deleteCollection(
             database, lockedCatalogue.name, collection.name
         )
-        await deleteCollection(database, collection.name)
     }
     //Close Connection
     connection.close()
 }
+
+
+//////////////
+//////////////
+
+
+const createItem = async (options) => {
+    //Open Connection
+    console.log("Connecting to MongoDB database...\n")
+    const { connection, database } = await mongoConnect(options)
+    //Create item
+} 
 
 
 //////////////
