@@ -44,12 +44,12 @@ const dataOperator = createMongoOperator(
 
 
 const run = async () => {
-    await syncLockedCatalogue(catalogue, dataOperator)
+    await syncLockedCatalogue(catalogue, dataOperator)/*
     await createInCollection(
         "myCatalogue", "myCollection", dataOperator, peaceTshirt
     ).catch( 
         (err) => console.error(err.message)
-    )
+    )*/
 }
 
 run().catch(

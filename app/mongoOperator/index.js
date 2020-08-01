@@ -243,7 +243,7 @@ const readItem = async (
     const { connection, database } = await mongoConnect(options)
     //
     const query = {
-        identifier: itemIdentifier.data,
+        identifier: itemIdentifier,
         ...variationFilter
     }
     //
@@ -258,7 +258,7 @@ const readItem = async (
     //Close Connection
     connection.close()
     //
-    return
+    return returnVal
 }
 
 
@@ -308,7 +308,8 @@ const createMongoOperator = (url, database) => {
             collectionName, 
             itemIdentifier,
             variationFilter
-        )
+        ),
+        
     )
     return dataOperator
 }
