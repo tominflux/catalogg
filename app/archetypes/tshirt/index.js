@@ -3,7 +3,7 @@ const { FIELD_TYPE, createField } = require("ffield")
 
 const tshirtArchetype = createArchetype(
     //Identifier 
-    createField(FIELD_TYPE.STRING, "tshirt"),
+    "tshirt",
     //Properties
     {
         name: FIELD_TYPE.STRING,

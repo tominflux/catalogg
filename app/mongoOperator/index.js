@@ -78,6 +78,9 @@ const deleteCollection = (
                         `   Collection "${collectionName}" deleted ` +
                         `from catalogue "${catalogueName}".`
                     )
+                    console.log(
+                        `   ${dbCollectionName(catalogueName, collectionName)}`
+                    )
                     resolve()
                     return 
                 } else {
@@ -107,6 +110,31 @@ const insertIntoCollection = (
                     return
                 }
                 resolve()
+            }
+        )
+    )
+)
+
+const findInCollection = (
+    database, catalogueName, collectionName, query
+) => new Promise(
+    (resolve, reject) => (
+        database.collection(
+            dbCollectionName(catalogueName, collectionName)
+        )
+        .find(query)
+        .toArray(
+            (err, res) => {
+                if (err) {
+                    reject(
+                        `   Could not find documents in collection ` +
+                        `"${collectionName}" of catalogue "${catalogueName}"` +
+                        `... ${err.message}\n` +
+                        `   Query: ${query}`
+                    )
+                } else {
+                    resolve(res)
+                }
             }
         )
     )
@@ -203,6 +231,36 @@ const createItem = async (
     connection.close()
 } 
 
+const readItem = async (
+    options,
+    catalogueName,
+    collectionName,
+    itemIdentifier,
+    variationFilter=null
+) => {
+    //Open Connection
+    console.log("Connecting to MongoDB database...\n")
+    const { connection, database } = await mongoConnect(options)
+    //
+    const query = {
+        identifier: itemIdentifier.data,
+        ...variationFilter
+    }
+    //
+    const result = await findInCollection(
+        database, catalogueName, collectionName, query
+    )
+    //
+    const returnVal = (
+        (result.length > 0) ?
+            result : null
+    )
+    //Close Connection
+    connection.close()
+    //
+    return
+}
+
 
 //////////////
 //////////////
@@ -237,6 +295,19 @@ const createMongoOperator = (url, database) => {
             collectionName, 
             lockedItem,
             variationObjs
+        ),
+        //Read Item
+        async (
+            catalogueName,
+            collectionName,
+            itemIdentifier,
+            variationFilter
+        ) => await readItem(
+            options,
+            catalogueName, 
+            collectionName, 
+            itemIdentifier,
+            variationFilter
         )
     )
     return dataOperator

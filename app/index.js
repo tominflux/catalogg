@@ -11,6 +11,7 @@ const { traverseThroughStocks, getVariationObjs } = require('../lib/itemOperator
 
 const peaceTshirt = createItem(
     tshirtArchetype,
+    "peace-tshirt",
     {
         name: "Peace T-Shirt",
         priceGBP: 30.00,
@@ -41,14 +42,20 @@ const dataOperator = createMongoOperator(
     process.env.MONGO_DATABASE
 )
 
+
 const run = async () => {
     await syncLockedCatalogue(catalogue, dataOperator)
-    createInCollection(
+    await createInCollection(
         "myCatalogue", "myCollection", dataOperator, peaceTshirt
+    ).catch( 
+        (err) => console.error(err.message)
     )
 }
 
-run()
+run().catch(
+    (reason) => console.error(reason)
+)
+
 
 exports.catalogue = catalogue
 exports.dataOperator = dataOperator
