@@ -6,8 +6,9 @@ const createCatalogue = (identifier, dataApi) => {
     await dataApi.createCatalogue(identifier)
 }
 
-const readCatalogue = (identifier, dataApi) => {
+const readCatalogues = (dataApi) => {
     //
+    await dataApi.readCatalogues()
 }
 
 const renameCatalogue = (identifier, newIdentifier, dataApi) => {

@@ -109,7 +109,7 @@ const insertIntoCollection = (
                     )
                     return
                 }
-                resolve()
+                resolve(res)
             }
         )
     )
