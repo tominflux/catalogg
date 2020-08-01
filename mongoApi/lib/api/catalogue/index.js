@@ -1,6 +1,5 @@
 
 const { mongoConnect } = require("../../../util/connect")
-const { createMongoCollection } = require("../../../util/operations")
 const { 
     getCatalogueNames,
     createArchetypesCollection, 

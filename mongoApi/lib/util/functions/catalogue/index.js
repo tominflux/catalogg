@@ -58,16 +58,6 @@ const createCollectionsCollection = async (
     await createMongoCollection(database, collectionName)
 }
 
-const createCollectionsCollection = async (
-    database, catalogueIdentifier
-) => {
-    const collectionName = getCollectionsCollectionName(
-        catalogueIdentifier
-    )
-    //
-    await createMongoCollection(database, collectionName)
-}
-
 const deleteArchetypesCollection = async (
     database, catalogueIdentifier
 ) => {
@@ -93,3 +83,5 @@ exports.getArchetypesCollectionName = getArchetypesCollectionName
 exports.getCollectionsCollectionName = getCollectionsCollectionName
 exports.createArchetypesCollection = createArchetypesCollection
 exports.createCollectionsCollection = createCollectionsCollection
+exports.deleteArchetypesCollection = deleteArchetypesCollection
+exports.deleteCollectionsCollection = deleteCollectionsCollection
