@@ -17,7 +17,7 @@ const getCatalogueNames = async (database) => {
         )
         if (isCataloggCollection) {
             const regex = /__(.+)__/ 
-            const catalogueName = regex.match(collectionName)[1]
+            const catalogueName = collectionName.match(regex)[1]
             if (
                 catalogueName &&
                 !catalogueNames.includes(catalogueName)

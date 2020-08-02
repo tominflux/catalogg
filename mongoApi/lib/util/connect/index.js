@@ -3,9 +3,10 @@ const mongoClient = require("mongodb").MongoClient
 const mongoConnect = (options) => (
     new Promise(
         (resolve, reject) => {
-            console.log("Connecting to MongoDB database...\n")
+            console.log("Connecting to MongoDB database...")
+            console.log(`   ${options.connection}\n`)
             mongoClient.connect(
-                options.url,
+                options.connection,
                 (err, connection) => {
                     if (err) {
                         reject(err.message)

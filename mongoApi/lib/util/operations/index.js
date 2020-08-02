@@ -5,13 +5,21 @@ const getMongoCollections = async (
     database
 ) => new Promise(
     (resolve, reject) => (
-        database.getCollectionNames((err, res) => {
-            if (err) {
-                reject(err.message)
-            } else {
-                resolve(res)
+        database.listCollections(
+            {},
+            { nameOnly: true }
+        ).toArray(
+            (err, res) => {
+                if (err) {
+                    reject(err.message)
+                } else {
+                    const names = res.map(
+                        collection => collection.name
+                    )
+                    resolve(names)
+                }
             }
-        })
+        )
     )
 )
 

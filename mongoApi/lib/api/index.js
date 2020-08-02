@@ -18,7 +18,7 @@ const wrapApiMethod = (options, method) => {
     return (...params) => method(options, ...params)
 }
 
-const wrapAllMethods = (objOfMethods, options) => {
+const wrapAllMethods = (options, objOfMethods) => {
     let objOfWrappedMethods = {}
     for (const key in objOfMethods) {
         const method = objOfMethods[key]
@@ -33,8 +33,9 @@ const wrapAllMethods = (objOfMethods, options) => {
 
 //
 
-const generateApi = (options) => {
-    const allWrappedMethods = wrapAllMethods(allMethods, options)
+const generateApi = (connection, database) => {
+    const options = { connection, database }
+    const allWrappedMethods = wrapAllMethods(options, allMethods)
     return allWrappedMethods
 }
 

@@ -17,5 +17,3 @@ const readArchetype = async (catalogueIdentifier, archetypeIdentifier, dataApi) 
 const deleteArchetype = async (catalogueIdentifier, archetypeIdentifier, dataApi) => {
     await dataApi.deleteArchetype(catalogueIdentifier, archetypeIdentifier)
 }
-
-const readArchetype = (catalogueIdentifier, dataApi)

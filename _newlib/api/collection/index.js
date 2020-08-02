@@ -1,6 +1,3 @@
-const { dataOperator } = require("../../../../app")
-
-
 
 const createCollection = async (catalogueIdentifier, collectionIdentifier, dataApi) => {
     await dataApi.createCollection(catalogueIdentifier, collectionIdentifier)
