@@ -4,7 +4,6 @@ const mongoConnect = (options) => (
     new Promise(
         (resolve, reject) => {
             console.log("Connecting to MongoDB database...")
-            console.log(`   ${options.connection}\n`)
             mongoClient.connect(
                 options.connection,
                 (err, connection) => {

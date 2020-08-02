@@ -50,9 +50,13 @@ const getAllFromCollectionsCollection = async (
         collectionName
     )
     //
+    const collections = documents.map(
+        document => ({ identifier: document.identifier })
+    )
+    //
     return (
-        (documents.length > 0) ? 
-            documents[0] : null
+        (collections.length > 0) ? 
+            collections[0] : null
     )
 }
 
