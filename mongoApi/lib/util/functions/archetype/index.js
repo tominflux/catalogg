@@ -1,4 +1,4 @@
-const { getArchetypesCollectionName } = require("../catalogue")
+const { getArchetypesCollectionName } = require("../../misc")
 const { 
     insertIntoCollection, 
     findInCollection, 

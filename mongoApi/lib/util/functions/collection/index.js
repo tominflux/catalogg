@@ -1,8 +1,10 @@
-const { getCollectionsCollectionName } = require("../catalogue")
+const { getCollectionsCollectionName, getItemsCollectionName } = require("../../misc")
 const { 
     insertIntoCollection, 
     findInCollection, 
-    deleteFromCollection 
+    deleteFromCollection,
+    createMongoCollection,
+    deleteMongoCollection
 } = require("../../operations")
 
 
@@ -21,6 +23,18 @@ const insertIntoCollectionsCollection = async (
         database,
         collectionName,
         [ document ]
+    )
+}
+
+const createItemsCollection = async (
+    database, catalogueIdentifier, collectionIdentifier
+) => {
+    const collectionName = getItemsCollectionName(
+        catalogueIdentifier, collectionIdentifier
+    )
+    //
+    await createMongoCollection(
+        database, collectionName
     )
 }
 
@@ -56,6 +70,20 @@ const deleteFromCollectionsCollection = async (
     )
 }
 
+const deleteItemsCollection = async (
+    database, catalogueIdentifier, collectionIdentifier
+) => {
+    const collectionName = getItemsCollectionName(
+        catalogueIdentifier, collectionIdentifier
+    )
+    //
+    await deleteMongoCollection(
+        database, collectionName
+    )
+}
+
 exports.insertIntoCollectionsCollection = insertIntoCollectionsCollection
+exports.createItemsCollection = createItemsCollection
 exports.getAllFromCollectionsCollection = getAllFromCollectionsCollection
 exports.deleteFromCollectionsCollection = deleteFromCollectionsCollection
+exports.deleteItemsCollection = deleteItemsCollection

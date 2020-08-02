@@ -3,7 +3,10 @@ const {
     getMongoCollections,
     deleteMongoCollection 
 } = require("../../operations")
-const { deleteMongoCollection } = require("../../../../util/operations")
+const {
+    getArchetypesCollectionName,
+    getCollectionsCollectionName
+} = require("../../misc")
 
 const getCatalogueNames = async (database) => {
     const collectionNames = await getMongoCollections(database)
@@ -25,18 +28,6 @@ const getCatalogueNames = async (database) => {
     }
     return catalogueNames
 }
-
-const getArchetypesCollectionName = (
-    catalogueIdentifier
-) => (
-    `catalogg__${catalogueIdentifier}__archetypes`
-)
-
-const getCollectionsCollectionName = (
-    catalogueIdentifier
-)  => (
-    `catalogg__${catalogueIdentifier}__collections`
-)
 
 const createArchetypesCollection = async (
     database, catalogueIdentifier
@@ -79,8 +70,6 @@ const deleteCollectionsCollection = async (
 }
 
 exports.getCatalogueNames = getCatalogueNames
-exports.getArchetypesCollectionName = getArchetypesCollectionName
-exports.getCollectionsCollectionName = getCollectionsCollectionName
 exports.createArchetypesCollection = createArchetypesCollection
 exports.createCollectionsCollection = createCollectionsCollection
 exports.deleteArchetypesCollection = deleteArchetypesCollection
