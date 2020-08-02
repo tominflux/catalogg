@@ -1,5 +1,10 @@
 const { createArchetype: _createArchetype } = require("aarketype")
-const { insertIntoArchetypesCollection, getAllFromArchetypesCollection, findInArchetypesCollection, deleteFromArchetypesCollection } = require("../../util/functions/archetype")
+const { 
+    insertIntoArchetypesCollection, 
+    getAllFromArchetypesCollection, 
+    findInArchetypesCollection, 
+    deleteFromArchetypesCollection 
+} = require("../../util/functions/archetype")
 
 
 const createArchetype = async (
