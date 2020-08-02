@@ -7,18 +7,21 @@ const {
 
 
 const insertIntoArchetypesCollection = async (
-    database, catalogueIdentifier, archetype
+    database, catalogueIdentifier, lockedArchetype
 ) => {
     const collectionName = getArchetypesCollectionName(
         catalogueIdentifier
     )
     //
+    /*
     const document = {
-        identifier: archetype.identifier.data,
-        properties: archetype.properties,
-        variationFactors: archetype.variationFactors,
-        derivedProperties: archetype.derivedProperties
+        identifier: lockedArchetype.identifier.data,
+        properties: lockedArchetype.properties,
+        variationFactors: lockedArchetype.variationFactors,
+        derivedProperties: lockedArchetype.derivedProperties
     }
+    */
+    const document = lockedArchetype
     //
     await insertIntoCollection(
         database,

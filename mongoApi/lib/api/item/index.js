@@ -1,13 +1,24 @@
-
+const {
+    insertIntoItemsCollection
+} = require("../../util/functions/item")
 
 const createItem = async (
     options,
     catalogueIdentifier, 
     collectionIdentifier, 
-    item
+    lockedItem,
+    variationObjs
 ) => {
     //
     const { connection, database } = await mongoConnect(options)
+    //
+    await insertIntoItemsCollection(
+        database,
+        catalogueIdentifier,
+        collectionIdentifier,
+        lockedItem,
+        variationObjs
+    )
     //
     connection.close()
 }
