@@ -40,6 +40,7 @@ const deleteCatalogue = async (
     //
     const { connection, database } = await mongoConnect(options)
     //
+    //TODO: deleteItemCollections
     await deleteArchetypesCollection(database, identifier)
     await deleteCollectionsCollection(database, identifier)
     //

@@ -1,4 +1,5 @@
 const { createArchetype: _createArchetype } = require("aarketype")
+const { mongoConnect } = require("../../util/connect")
 const { 
     insertIntoArchetypesCollection, 
     getAllFromArchetypesCollection, 

@@ -10,9 +10,10 @@ const cataloggMongoApi = genCataloggMongoApi(
 const cataloggApi = genCataloggApi(cataloggMongoApi)
 
 const run = async () => {
-    const names = await cataloggApi.readCatalogueNames()
-    console.log()
-    console.log(names)
+    await cataloggApi.createArchetype(
+        "myCatalogue",
+        tshirtArchetype
+    )
 }
 run()
 /*
