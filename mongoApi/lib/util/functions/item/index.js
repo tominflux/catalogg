@@ -1,5 +1,5 @@
 const { getItemsCollectionName } = require("../../misc")
-const { insertIntoCollection, findInCollection, deleteFromCollection } = require("../../operations")
+const { insertIntoCollection, findInCollection, deleteFromCollection, updateInCollection } = require("../../operations")
 
 
 const insertIntoItemsCollection = async (
@@ -58,7 +58,7 @@ const findInItemsCollection = async (
     return items
 }
 
-const getInItemsCollection = async (
+const getFromItemsCollection = async (
     database,
     catalogueIdentifier,
     collectionIdentifier,
@@ -84,6 +84,33 @@ const getInItemsCollection = async (
     )
 }
 
+const updateInItemsCollection = async (
+    database,
+    catalogueIdentifier,
+    collectionIdentifier,
+    itemIdentifier,
+    variationObjs,
+    stocks
+) => {
+    const collectionName = getItemsCollectionName(
+        catalogueIdentifier, collectionIdentifier
+    )
+    //
+    for (const variationObj of variationObjs) {
+        const index = variationObjs.indexOf(variationObj)
+        const stock = stocks[index]
+        await updateInCollection(
+            database,
+            collectionName,
+            {
+                identifier: itemIdentifier,
+                ...variationObj
+            },
+            { stock }
+        )
+    }
+}
+
 const deleteFromItemsCollection = async (
     database,
     catalogueIdentifier,
@@ -106,5 +133,6 @@ const deleteFromItemsCollection = async (
 
 exports.insertIntoItemsCollection = insertIntoItemsCollection
 exports.findInItemsCollection = findInItemsCollection
-exports.getInItemsCollection = getInItemsCollection
+exports.getFromItemsCollection = getFromItemsCollection
+exports.updateInItemsCollection = updateInItemsCollection
 exports.deleteFromItemsCollection = deleteFromItemsCollection

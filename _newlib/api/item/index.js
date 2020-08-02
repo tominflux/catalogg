@@ -50,7 +50,7 @@ const updateItemStock = async (
     catalogueIdentifier,
     collectionIdentifier,
     itemIdentifier,
-    variation,
+    variationObj,
     stock,
     dataApi
 ) => {
@@ -58,7 +58,7 @@ const updateItemStock = async (
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
-        variation,
+        variationObj,
         stock
     )
 }
@@ -67,6 +67,7 @@ const updateItemStocks = async (
     catalogueIdentifier,
     collectionIdentifier,
     itemIdentifier,
+    variationObjs,
     stocks,
     dataApi
 ) => {
@@ -74,6 +75,7 @@ const updateItemStocks = async (
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
+        variationObjs,
         stocks
     )
 }

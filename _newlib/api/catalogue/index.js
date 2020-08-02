@@ -6,14 +6,14 @@ const createCatalogue = (identifier, dataApi) => {
     await dataApi.createCatalogue(identifier)
 }
 
-const readCatalogues = (dataApi) => {
+const readCatalogueNames = (dataApi) => {
     //
-    await dataApi.readCatalogues()
+    await dataApi.readCatalogueNames()
 }
 
 const renameCatalogue = (identifier, newIdentifier, dataApi) => {
     //
-    await dataApi.renameCatalogue
+    await dataApi.renameCatalogue(identifier, newIdentifier, dataApi)
 }
 
 const deleteCatalogue = (identifier, dataApi) => {
