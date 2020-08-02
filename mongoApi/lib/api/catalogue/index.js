@@ -7,6 +7,8 @@ const {
     deleteArchetypesCollection,
     deleteCollectionsCollection
 } = require("../../util/functions/catalogue")
+const { readCollections } = require("../collection")
+const { deleteItemsCollection } = require("../../util/functions/collection")
 
 
 const createCatalogue = async (
@@ -40,7 +42,13 @@ const deleteCatalogue = async (
     //
     const { connection, database } = await mongoConnect(options)
     //
-    //TODO: deleteItemCollections
+    const collections = await readCollections(options, identifier)
+    for (const collection of collections) {
+        await deleteItemsCollection(
+            database, identifier, collection.identifier
+        )
+    }
+    //
     await deleteArchetypesCollection(database, identifier)
     await deleteCollectionsCollection(database, identifier)
     //

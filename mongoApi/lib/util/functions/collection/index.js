@@ -54,10 +54,7 @@ const getAllFromCollectionsCollection = async (
         document => ({ identifier: document.identifier })
     )
     //
-    return (
-        (collections.length > 0) ? 
-            collections[0] : null
-    )
+    return collections
 }
 
 const deleteFromCollectionsCollection = async (

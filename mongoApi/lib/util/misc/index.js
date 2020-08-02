@@ -21,3 +21,10 @@ const getItemsCollectionName = (
 exports.getArchetypesCollectionName = getArchetypesCollectionName
 exports.getCollectionsCollectionName = getCollectionsCollectionName
 exports.getItemsCollectionName = getItemsCollectionName
+
+
+const apiErr = (msg) => new Error(
+    `Catalogg MongoDB API Error: ${msg}`
+)
+
+exports.apiErr = apiErr

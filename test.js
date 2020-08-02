@@ -33,11 +33,7 @@ validateItem(peaceTshirt, tshirtArchetype)
 
 
 const run = async () => {
-    await cataloggApi.createItem(
-        "myCatalogue",
-        "myCollection",
-        peaceTshirt
-    )
+        await cataloggApi.deleteCatalogue("newCatalogue")
 }
 run()
 /*

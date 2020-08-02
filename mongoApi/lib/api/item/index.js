@@ -6,6 +6,7 @@ const {
     deleteFromItemsCollection
 } = require("../../util/functions/item")
 const { mongoConnect } = require("../../util/connect")
+const { apiErr } = require("../../util/misc")
 
 const createItem = async (
     options,
@@ -16,6 +17,25 @@ const createItem = async (
 ) => {
     //
     const { connection, database } = await mongoConnect(options)
+    //Ensure item does not already exist.
+    const items = await findInItemsCollection(
+        database,
+        catalogueIdentifier,
+        collectionIdentifier,
+        lockedItem.identifier,
+        {}
+    )
+    const alreadyExists = (items.length > 0)
+    if (alreadyExists) {
+        //
+        connection.close()
+        //
+        console.log(lockedItem.identifier)
+        throw apiErr(
+            `Could not create item "${lockedItem.identifier}", ` +
+            `already exists.`
+        )
+    }
     //
     await insertIntoItemsCollection(
         database,
