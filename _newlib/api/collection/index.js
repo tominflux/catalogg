@@ -5,6 +5,7 @@ const createCollection = async (catalogueIdentifier, collectionIdentifier, dataA
 
 const readCollections = async (catalogueIdentifier, dataApi) => {
     const collections = await dataApi.readCollections(catalogueIdentifier)
+    return collections
 }
 
 const deleteCollection = async (catalogueIdentifier, collectionIdentifier, dataApi) => {
