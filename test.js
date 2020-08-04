@@ -9,7 +9,7 @@ const cataloggMongoApi = genCataloggMongoApi(
     process.env.MONGO_DATABASE
 )
 const cataloggApi = genCataloggApi(cataloggMongoApi)
-
+const cataloggRestApi = genCataloggRestApi(cataloggApi)
 
 
 const peaceTshirt = createItem(
@@ -41,3 +41,22 @@ cataloggApi.createArchetype(
     tshirtArchetype
 )
 */
+const express = require("express")
+
+const app = express()
+const port = parseInt(process.env.PORT) || 3002
+
+async function run() {
+    app.use(
+        cataloggRestApi
+    )
+    app.listen(
+        port, () => {
+            console.log(
+                `Public server listening on port ${port}!`
+            )
+        }
+    )
+}
+
+run()

@@ -33,10 +33,10 @@ const wrapAllMethods = (options, objOfMethods) => {
 
 //
 
-const generateApi = (connection, database) => {
+const genMongoApi = (connection, database) => {
     const options = { connection, database }
     const allWrappedMethods = wrapAllMethods(options, allMethods)
     return allWrappedMethods
 }
 
-module.exports = generateApi
+module.exports = genMongoApi
