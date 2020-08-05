@@ -42,10 +42,7 @@ const getAllFromArchetypesCollection = async (
         collectionName
     )
     //
-    return (
-        (documents.length > 0) ? 
-            documents[0] : null
-    )
+    return documents
 }
 
 const findInArchetypesCollection = async (

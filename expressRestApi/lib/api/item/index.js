@@ -5,7 +5,7 @@ const { createItem } = require("aarketype")
 /////////////////
 
 
-const postItem = (req, res, next) => {
+const postItem = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const archetypeIdentifier = req.body.archetypeId
@@ -31,7 +31,7 @@ const postItem = (req, res, next) => {
     res.send()
 }
 
-const getItems = (req, res, next) => {
+const getItems = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     //
@@ -44,7 +44,7 @@ const getItems = (req, res, next) => {
     res.json(items)
 }
 
-const getItem = (req, res, next) => {
+const getItem = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const itemIdentifier = req.param.itmId
@@ -58,7 +58,24 @@ const getItem = (req, res, next) => {
     res.json(item)
 }   
 
-const deleteItem = (req, res, next) => {
+const putItem = async (req, res, next) => {
+    const catalogueIdentifier = req.params.catId
+    const collectionIdentifier = req.params.colId
+    const itemIdentifier = req.param.itmId
+    //
+    const newProperties = req.body.properties
+    //
+    req.catalogg.updateItem(
+        catalogueIdentifier,
+        collectionIdentifier,
+        itemIdentifier,
+        newProperties
+    )
+    //
+    res.send()
+}
+
+const deleteItem = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const itemIdentifier = req.param.itmId
@@ -89,6 +106,10 @@ const serveItemApi = (router) => {
     router.get(
         "/catalogue/:catId/collection/:colId/item/:itmId", 
         getItem
+    )
+    router.put(
+        "/catalogue/:catId/collection/:colId/item/:itmId",
+        putItem
     )
     router.delete(
         "/catalogue/:catId/collection/:colId/item/:itmId", 

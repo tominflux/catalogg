@@ -3,7 +3,9 @@ const {
     getAllFromCollectionsCollection, 
     deleteFromCollectionsCollection, 
     createItemsCollection, 
-    deleteItemsCollection 
+    deleteItemsCollection, 
+    createStocksCollection,
+    deleteStocksCollection
 } = require("../../util/functions/collection")
 const { mongoConnect } = require("../../util/connect")
 
@@ -20,6 +22,9 @@ const createCollection = async (
         database, catalogueIdentifier, collectionIdentifier
     )
     await createItemsCollection(
+        database, catalogueIdentifier, collectionIdentifier
+    )
+    await createStocksCollection(
         database, catalogueIdentifier, collectionIdentifier
     )
     //
@@ -54,6 +59,9 @@ const deleteCollection = async (
         database, catalogueIdentifier, collectionIdentifier
     )
     await deleteItemsCollection(
+        database, catalogueIdentifier, collectionIdentifier
+    )
+    await deleteStocksCollection(
         database, catalogueIdentifier, collectionIdentifier
     )
     //

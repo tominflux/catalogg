@@ -1,6 +1,6 @@
 
 
-const getStocks = (req, res, next) => {
+const getStocks = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const itemIdentifier = req.param.itmId
@@ -8,29 +8,30 @@ const getStocks = (req, res, next) => {
     const itemStocks = await req.catalogg.readItemStocks(
         catalogueIdentifier,
         collectionIdentifier,
-        itemIdentifier,
-        req.body.variationFilter
+        itemIdentifier
     )
     //
     res.json(itemStocks)
 }
 
-const getStock = (req, res, next) => {
+const getStock = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const itemIdentifier = req.param.itmId
     //
-    const itemStock = await req.catalogg.readItemStock(
+    const variationObj = req.query
+    //
+    const itemStock = await req.catalogg.readStock(
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
-        req.body.variation
+        variationObj
     )
     //
     res.json(itemStock)
 }
 
-const putStocks = (req, res, next) => {
+const putStocks = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const itemIdentifier = req.param.itmId
@@ -39,24 +40,6 @@ const putStocks = (req, res, next) => {
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
-        req.body.variations,
-        req.body.stocks
-    )
-    //
-    res.send()
-}
-
-
-const putStock = (req, res, next) => {
-    const catalogueIdentifier = req.params.catId
-    const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
-    //
-    await req.catalogg.update(
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        req.body.variation,
         req.body.stock
     )
     //
@@ -64,13 +47,31 @@ const putStock = (req, res, next) => {
 }
 
 
+const putStock = async (req, res, next) => {
+    const catalogueIdentifier = req.params.catId
+    const collectionIdentifier = req.params.colId
+    const itemIdentifier = req.param.itmId
+    //
+    const variationObj = req.query
+    //
+    await req.catalogg.update(
+        catalogueIdentifier,
+        collectionIdentifier,
+        itemIdentifier,
+        variationObj,
+        req.body.stock
+    )
+    //
+    res.send()
+}
+
 /////////////
 /////////////
 
 
 const serveStockApi = (router) => {
     router.get(
-        "/catalogue/:catId/collection/:colId/stocks:/itmId", 
+        "/catalogue/:catId/collection/:colId/stocks/:itmId", 
         getStocks
     )
     router.get(
@@ -86,3 +87,5 @@ const serveStockApi = (router) => {
         putStock
     )
 }
+
+exports.serveStockApi = serveStockApi

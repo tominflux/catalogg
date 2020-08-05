@@ -27,20 +27,9 @@ const readArchetypes = async (
     //
     const { connection, database } = await mongoConnect(options)
     //
-    const dbArchetypes = getAllFromArchetypesCollection(
+    const archetypes = await getAllFromArchetypesCollection(
         database, catalogueIdentifier
     )
-    //
-    const archetypes = []
-    //
-    for (const dbArchetype of dbArchetypes) {
-        const archetype = _createArchetype(
-            dbArchetype.identifier,
-            dbArchetype.properties,
-            dbArchetype.variationFactors
-        )
-        archetypes.push(archetype)
-    }
     //
     connection.close()
     //
@@ -53,13 +42,8 @@ const readArchetype = async (
     //
     const { connection, database } = await mongoConnect(options)
     //
-    const dbArchetype = findInArchetypesCollection(
+    const archetype = findInArchetypesCollection(
         database, catalogueIdentifier, archetypeIdentifier
-    )
-    const archetype = createArchetype(
-        dbArchetype.identifier,
-        dbArchetype.properties,
-        dbArchetype.variationFactors
     )
     //
     connection.close()

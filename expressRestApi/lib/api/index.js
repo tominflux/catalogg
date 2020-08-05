@@ -4,6 +4,7 @@ const { serveArchetypeApi } = require("./archetype");
 const { serveCatalogueApi } = require("./catalogue");
 const { serveCollectionApi } = require("./collection");
 const { serveItemApi } = require("./item");
+const { serveStockApi } = require("./stock");
 
 
 const genCataloggExpressRestApi = (cataloggApi) => {
@@ -11,7 +12,7 @@ const genCataloggExpressRestApi = (cataloggApi) => {
     router.use(bodyParser.json())
     //Insert cataloggApi into router requests
     router.use((req, res, next) => {
-        res.catalogg = cataloggApi
+        req.catalogg = cataloggApi
         next()
     })
     //

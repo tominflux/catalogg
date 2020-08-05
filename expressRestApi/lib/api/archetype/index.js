@@ -12,7 +12,7 @@ const postArchetype = async (req, res, next) => {
         req.body.variationFactors
     )
     //
-    await res.catalogg.createArchetype(
+    await req.catalogg.createArchetype(
         catalogueIdentifier,
         newArchetype
     )
@@ -23,7 +23,7 @@ const postArchetype = async (req, res, next) => {
 const getArchetypes = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     //
-    const archetypes = await res.catalogg.readArchetypes(
+    const archetypes = await req.catalogg.readArchetypes(
         catalogueIdentifier
     )
     //
@@ -34,7 +34,7 @@ const getArchetype = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const archetypeIdentifier = req.params.archId
     //
-    const archetype = await res.catalogg.readArchetype(
+    const archetype = await req.catalogg.readArchetype(
         catalogueIdentifier, archetypeIdentifier
     )
     //
@@ -45,7 +45,7 @@ const deleteArchetype = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const archetypeIdentifier = req.params.archId
     //
-    await res.catalogg.deleteArchetype(
+    await req.catalogg.deleteArchetype(
         catalogueIdentifier, archetypeIdentifier
     )
     //
@@ -56,7 +56,7 @@ const serveArchetypeApi = (router) => {
     router.post("/catalogue/:catId/archetype/:archId", postArchetype)
     router.get("/catalogue/:catId/archetypes", getArchetypes)
     router.get("/catalogue/:catId/archetype/:archId", getArchetype)
-    router.delete("/catalogye/:catId/archetype/:archId", deleteArchetype)
+    router.delete("/catalogue/:catId/archetype/:archId", deleteArchetype)
 }
 
 exports.serveArchetypeApi = serveArchetypeApi

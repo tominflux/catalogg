@@ -3,7 +3,7 @@
 const postCatalogue = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     //
-    await res.catalogg.createCatalogue(catalogueIdentifier)
+    await req.catalogg.createCatalogue(catalogueIdentifier)
     //
     res.send()
 }
@@ -28,7 +28,7 @@ const putCatalogue = async (req, res, next) => {
 const deleteCatalogue = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     //
-    await res.catalogg.deleteCatalogue(catalogueIdentifier)
+    await req.catalogg.deleteCatalogue(catalogueIdentifier)
     //
     res.send()
 }
