@@ -18,9 +18,16 @@ const getItemsCollectionName = (
     `catalogg__${catalogueIdentifier}__${collectionIdentifier}`
 )
 
+const getStocksCollectionName = (
+    catalogueIdentifier, collectionIdentifier
+) => (
+    `catalogg__${catalogueIdentifier}__${collectionIdentifier}`
+)
+
 exports.getArchetypesCollectionName = getArchetypesCollectionName
 exports.getCollectionsCollectionName = getCollectionsCollectionName
 exports.getItemsCollectionName = getItemsCollectionName
+exports.getStocksCollectionName = getStocksCollectionName
 
 
 const apiErr = (msg) => new Error(

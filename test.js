@@ -33,7 +33,7 @@ validateItem(peaceTshirt, tshirtArchetype)
 
 
 const run = async () => {
-        await cataloggApi.deleteCatalogue("newCatalogue")
+    await cataloggApi.createCatalogue("newCatalogue")
 }
 run()
 /*
@@ -41,22 +41,3 @@ cataloggApi.createArchetype(
     tshirtArchetype
 )
 */
-const express = require("express")
-
-const app = express()
-const port = parseInt(process.env.PORT) || 3002
-
-async function run() {
-    app.use(
-        cataloggRestApi
-    )
-    app.listen(
-        port, () => {
-            console.log(
-                `Public server listening on port ${port}!`
-            )
-        }
-    )
-}
-
-run()

@@ -12,20 +12,19 @@ const createItem = async (
     options,
     catalogueIdentifier, 
     collectionIdentifier, 
-    lockedItem,
-    variationObjs
+    lockedItem
 ) => {
     //
     const { connection, database } = await mongoConnect(options)
+    /*
     //Ensure item does not already exist.
-    const items = await findInItemsCollection(
+    const item = await getFromItemsCollection(
         database,
         catalogueIdentifier,
         collectionIdentifier,
-        lockedItem.identifier,
-        {}
+        lockedItem.identifier
     )
-    const alreadyExists = (items.length > 0)
+    const alreadyExists = (item !== null)
     if (alreadyExists) {
         //
         connection.close()
@@ -36,13 +35,13 @@ const createItem = async (
             `already exists.`
         )
     }
+    */
     //
     await insertIntoItemsCollection(
         database,
         catalogueIdentifier,
         collectionIdentifier,
-        lockedItem,
-        variationObjs
+        lockedItem
     )
     //
     connection.close()
@@ -52,8 +51,7 @@ const readItems = async (
     options,
     catalogueIdentifier, 
     collectionIdentifier, 
-    itemIdentifier, 
-    variationFilter
+    propertyFilter 
 ) => {
     //
     const { connection, database } = await mongoConnect(options)
@@ -62,8 +60,7 @@ const readItems = async (
         database,
         catalogueIdentifier,
         collectionIdentifier,
-        itemIdentifier,
-        variationFilter
+        propertyFilter
     )
     //
     connection.close()
@@ -75,8 +72,7 @@ const readItem = async (
     options,
     catalogueIdentifier,
     collectionIdentifier,
-    itemIdentifier,
-    variationObj
+    itemIdentifier
 ) => {
     //
     const { connection, database } = await mongoConnect(options)
@@ -85,8 +81,7 @@ const readItem = async (
         database,
         catalogueIdentifier,
         collectionIdentifier,
-        itemIdentifier,
-        variationObj
+        itemIdentifier
     )
     //
     connection.close()
@@ -94,36 +89,13 @@ const readItem = async (
     return item
 }
 
-const updateItemStock = async (
-    options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier,
-    variationObj,
-    stock
-) => {
-    //
-    const { connection, database } = await mongoConnect(options)
-    //
-    await updateInItemsCollection(
-        database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        [ variationObj ],
-        [ stock ]
-    )
-    //
-    connection.close()
-}
 
-const updateItemStocks = async (
+const updateItem = async (
     options,
     catalogueIdentifier,
     collectionIdentifier,
     itemIdentifier,
-    variationObjs,
-    stocks
+    newProperties
 ) => {
     //
     const { connection, database } = await mongoConnect(options)
@@ -133,8 +105,7 @@ const updateItemStocks = async (
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
-        variationObjs,
-        stocks
+        newProperties
     )
     //
     connection.close()
@@ -162,6 +133,5 @@ const deleteItem = async (
 exports.createItem = createItem
 exports.readItems = readItems
 exports.readItem = readItem
-exports.updateItemStock = updateItemStock
-exports.updateItemStocks = updateItemStocks
+exports.updateItem = updateItem
 exports.deleteItem = deleteItem

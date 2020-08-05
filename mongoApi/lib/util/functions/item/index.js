@@ -1,46 +1,38 @@
 const { getItemsCollectionName } = require("../../misc")
-const { insertIntoCollection, findInCollection, deleteFromCollection, updateInCollection } = require("../../operations")
+const { 
+    insertIntoCollection, 
+    findInCollection, 
+    deleteFromCollection, 
+    updateInCollection 
+} = require("../../operations")
 
 
 const insertIntoItemsCollection = async (
     database,
     catalogueIdentifier,
     collectionIdentifier,
-    lockedItem,
-    variationObjs
+    lockedItem
 ) => {
     const collectionName = getItemsCollectionName(
         catalogueIdentifier, collectionIdentifier
     )
     //
-    /*
     const document = {
-        archetypeIdentifier: item.archetype.identifier.data,
-        identifier: item.identifier.data,
-        properties: item.properties
+        ...lockedItem
     }
-    */
     //
-    for (const variationObj of variationObjs) {
-        const document = {
-            ...lockedItem,
-            ...variationObj,
-            stock: 0
-        }
-        await insertIntoCollection(
-            database,
-            collectionName,
-            [ document ]
-        )
-    }
+    await insertIntoCollection(
+        database,
+        collectionName,
+        [ document ]
+    )
 }
 
 const findInItemsCollection = async (
     database,
     catalogueIdentifier,
     collectionIdentifier,
-    itemIdentifier,
-    variationFilter
+    propertyFilter
 ) => {
     const collectionName = getItemsCollectionName(
         catalogueIdentifier, collectionIdentifier
@@ -50,8 +42,9 @@ const findInItemsCollection = async (
         database,
         collectionName,
         {
-            identifier: itemIdentifier,
-            ...variationFilter
+            properties: {
+                ...propertyFilter
+            }
         }
     )
     //
@@ -62,8 +55,7 @@ const getFromItemsCollection = async (
     database,
     catalogueIdentifier,
     collectionIdentifier,
-    itemIdentifier,
-    variationObj
+    itemIdentifier
 ) => {
     const collectionName = getItemsCollectionName(
         catalogueIdentifier, collectionIdentifier
@@ -72,10 +64,7 @@ const getFromItemsCollection = async (
     const items = await findInCollection(
         database,
         collectionName,
-        {
-            identifier: itemIdentifier,
-            ...variationObj
-        }
+        { identifier: itemIdentifier }
     )
     //
     return (
@@ -89,26 +78,18 @@ const updateInItemsCollection = async (
     catalogueIdentifier,
     collectionIdentifier,
     itemIdentifier,
-    variationObjs,
-    stocks
+    updatedProperties
 ) => {
     const collectionName = getItemsCollectionName(
         catalogueIdentifier, collectionIdentifier
     )
     //
-    for (const variationObj of variationObjs) {
-        const index = variationObjs.indexOf(variationObj)
-        const stock = stocks[index]
-        await updateInCollection(
-            database,
-            collectionName,
-            {
-                identifier: itemIdentifier,
-                ...variationObj
-            },
-            { stock }
-        )
-    }
+    await updateInCollection(
+        database,
+        collectionName,
+        { identifier: itemIdentifier },
+        { properties: updatedProperties }
+    )
 }
 
 const deleteFromItemsCollection = async (
@@ -124,9 +105,7 @@ const deleteFromItemsCollection = async (
     await deleteFromCollection(
         database,
         collectionName,
-        {
-            identifier: itemIdentifier
-        }
+        { identifier: itemIdentifier }
     )
 }
 
