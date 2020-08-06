@@ -32,7 +32,7 @@ const findInItemsCollection = async (
     database,
     catalogueIdentifier,
     collectionIdentifier,
-    propertyFilter
+    propertyFilter={}
 ) => {
     const collectionName = getItemsCollectionName(
         catalogueIdentifier, collectionIdentifier

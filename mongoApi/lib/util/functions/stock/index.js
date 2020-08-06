@@ -114,7 +114,7 @@ const updateVariationInStocksCollection = async (
         collectionName,
         { 
             itemIdentifier,
-            variationObj
+            ...variationObj
         },
         { stock }
     )

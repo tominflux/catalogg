@@ -3,7 +3,7 @@
 const getStocks = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
+    const itemIdentifier = req.params.itmId
     //
     const itemStocks = await req.catalogg.readItemStocks(
         catalogueIdentifier,
@@ -17,7 +17,7 @@ const getStocks = async (req, res, next) => {
 const getStock = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
+    const itemIdentifier = req.params.itmId
     //
     const variationObj = req.query
     //
@@ -34,7 +34,7 @@ const getStock = async (req, res, next) => {
 const putStocks = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
+    const itemIdentifier = req.params.itmId
     //
     await req.catalogg.updateItemStocks(
         catalogueIdentifier,
@@ -50,11 +50,11 @@ const putStocks = async (req, res, next) => {
 const putStock = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
+    const itemIdentifier = req.params.itmId
     //
     const variationObj = req.query
     //
-    await req.catalogg.update(
+    await req.catalogg.updateStock(
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,

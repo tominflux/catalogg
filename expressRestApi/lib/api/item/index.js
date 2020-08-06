@@ -90,7 +90,7 @@ const deleteItem = async (req, res, next) => {
         itemIdentifier
     )
     //
-    res.sent()
+    res.send()
 }
 
 

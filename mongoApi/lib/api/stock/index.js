@@ -3,7 +3,8 @@ const {
     insertIntoStocksCollection, 
     updateItemInStocksCollection,
     updateVariationInStocksCollection,
-    deleteFromStocksCollection
+    deleteFromStocksCollection,
+    getVariationFromStocksCollection
 } = require("../../util/functions/stock")
 const { mongoConnect } = require("../../util/connect")
 const { apiErr } = require("../../util/misc")
@@ -32,7 +33,7 @@ const createStocksForItem = async (
         connection.close()
         //
         throw apiErr(
-            `Could not create item "${itemIdentifier}", ` +
+            `Could not create stocks for item "${itemIdentifier}", ` +
             `already exists.`
         )
     }
