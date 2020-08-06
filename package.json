@@ -2,7 +2,7 @@
   "name": "catalogg",
   "version": "0.1.0",
   "description": "Back-end framework for modelling tangible item collections.",
-  "main": "src/index.js",
+  "main": "lib/api/index.js",
   "dependencies": {
     "aarketype": "^0.1.4",
     "ffield": "^0.2.5",
