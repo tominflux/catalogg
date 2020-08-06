@@ -110,8 +110,8 @@ const updateInCollection = (
         .collection(collectionName)
         .updateMany(
             query,
-            values,
-            (err, res) => {
+            { $set: values },
+            (err, res) => { 
                 if (err) {
                     reject(err.message)
                 } else {

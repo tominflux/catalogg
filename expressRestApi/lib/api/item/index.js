@@ -9,7 +9,7 @@ const postItem = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const archetypeIdentifier = req.body.archetypeId
-    const itemIdentifier = req.body.idenitifer
+    const itemIdentifier = req.params.itmId
     //
     const archetype = await req.catalogg.readArchetype(
         catalogueIdentifier, archetypeIdentifier
@@ -34,11 +34,15 @@ const postItem = async (req, res, next) => {
 const getItems = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
+    const propertyFilter = (
+        (req.body.properties) ? 
+            req.body.properties : {}
+    )
     //
     const items = await req.catalogg.readItems(
         catalogueIdentifier,
         collectionIdentifier,
-        req.body.propertyFilter
+        propertyFilter
     )
     //
     res.json(items)
@@ -47,7 +51,7 @@ const getItems = async (req, res, next) => {
 const getItem = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
+    const itemIdentifier = req.params.itmId
     //
     const item = await req.catalogg.readItem(
         catalogueIdentifier,
@@ -61,7 +65,7 @@ const getItem = async (req, res, next) => {
 const putItem = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
+    const itemIdentifier = req.params.itmId
     //
     const newProperties = req.body.properties
     //
@@ -78,7 +82,7 @@ const putItem = async (req, res, next) => {
 const deleteItem = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const itemIdentifier = req.param.itmId
+    const itemIdentifier = req.params.itmId
     //
     await req.catalogg.deleteItem(
         catalogueIdentifier,

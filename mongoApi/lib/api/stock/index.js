@@ -136,9 +136,8 @@ const updateStock = async (
     connection.close()
 }
 
-const deleteItemStocks = (
+const deleteItemStocks = async (
     options,
-    database,
     catalogueIdentifier,
     collectionIdentifier,
     itemIdentifier

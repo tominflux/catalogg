@@ -38,14 +38,19 @@ const findInItemsCollection = async (
         catalogueIdentifier, collectionIdentifier
     )
     //
+    const query = (
+        ([...Object.keys(propertyFilter)].length > 0) ? 
+            {
+                properties: {
+                    ...propertyFilter
+                } 
+            } : null
+    )
+    //
     const items = await findInCollection(
         database,
         collectionName,
-        {
-            properties: {
-                ...propertyFilter
-            }
-        }
+        query
     )
     //
     return items

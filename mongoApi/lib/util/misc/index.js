@@ -15,13 +15,13 @@ const getCollectionsCollectionName = (
 const getItemsCollectionName = (
     catalogueIdentifier, collectionIdentifier
 ) => (
-    `catalogg__${catalogueIdentifier}__${collectionIdentifier}`
+    `catalogg__${catalogueIdentifier}__${collectionIdentifier}__items`
 )
 
 const getStocksCollectionName = (
     catalogueIdentifier, collectionIdentifier
 ) => (
-    `catalogg__${catalogueIdentifier}__${collectionIdentifier}`
+    `catalogg__${catalogueIdentifier}__${collectionIdentifier}__stocks`
 )
 
 exports.getArchetypesCollectionName = getArchetypesCollectionName

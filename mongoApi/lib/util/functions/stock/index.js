@@ -1,5 +1,12 @@
-const { getStocksCollectionName } = require("../../misc")
-
+const { 
+    getStocksCollectionName
+} = require("../../misc")
+const { 
+    findInCollection, 
+    insertIntoCollection,
+    updateInCollection,
+    deleteFromCollection
+} = require("../../operations")
 
 const insertIntoStocksCollection = async (
     database,
@@ -8,7 +15,7 @@ const insertIntoStocksCollection = async (
     itemIdentifier,
     variationObjs
 ) => {
-    const collectionName = getItemsCollectionName(
+    const collectionName = getStocksCollectionName(
         catalogueIdentifier, collectionIdentifier
     )
     //
@@ -32,7 +39,7 @@ const getItemFromStocksCollection = async (
     collectionIdentifier,
     itemIdentifier
 ) => {
-    const collectionName = getItemsCollectionName(
+    const collectionName = getStocksCollectionName(
         catalogueIdentifier, collectionIdentifier
     )
     //
