@@ -10,7 +10,7 @@ const { serveStockApi } = require("./stock");
 const genCataloggExpressRestApi = (cataloggApi) => {
     const router = express.Router()
     router.use(bodyParser.json())
-    //Insert cataloggApi into router requests
+    //Insert catalogg API into router requests
     router.use((req, res, next) => {
         req.catalogg = cataloggApi
         next()
