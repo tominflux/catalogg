@@ -4,7 +4,7 @@ const {
     insertIntoCollection, 
     updateInCollection,
     deleteFromCollection
-} = require("x-logg/mongoops")
+} = require("@x-logg/mongoops")
 const { getBasketsCollectionName } = require("../../util/misc")
 
 
