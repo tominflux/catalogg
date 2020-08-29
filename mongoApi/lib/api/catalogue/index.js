@@ -8,7 +8,7 @@ const {
     deleteCollectionsCollection
 } = require("../../util/functions/catalogue")
 const { readCollections } = require("../collection")
-const { deleteItemsCollection } = require("../../util/functions/collection")
+const { deleteItemsCollection, deleteStocksCollection } = require("../../util/functions/collection")
 
 
 const createCatalogue = async (
@@ -45,6 +45,9 @@ const deleteCatalogue = async (
     const collections = await readCollections(options, identifier)
     for (const collection of collections) {
         await deleteItemsCollection(
+            database, identifier, collection.identifier
+        )
+        await deleteStocksCollection(
             database, identifier, collection.identifier
         )
     }
