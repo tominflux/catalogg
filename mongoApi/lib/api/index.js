@@ -12,7 +12,7 @@ const { getBasketsCollectionName } = require("../util/misc")
 /////////////
 
 
-const initialiseCatalogg = (
+const initialiseCatalogg = async (
     options
 ) => {
     //
