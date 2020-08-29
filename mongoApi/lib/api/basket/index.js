@@ -1,4 +1,10 @@
-const { findInCollection, insertIntoCollection, updateInCollection } = require("../../util/operations")
+const { 
+    connect, 
+    findInCollection, 
+    insertIntoCollection, 
+    updateInCollection,
+    deleteFromCollection
+} = require("x-logg/mongoops")
 const { getBasketsCollectionName } = require("../../util/misc")
 
 
@@ -11,7 +17,7 @@ const createBasket = async (
     lockedBasket
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
     await insertIntoCollection(
         database,
@@ -27,7 +33,7 @@ const readBasket = async (
     userId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
     const identifier = userId
     //
@@ -47,7 +53,7 @@ const updateBasket = async (
     lockedBasket
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
     const identifier = lockedBasket.identifier
     //
@@ -68,9 +74,15 @@ const deleteBasket = async (
     userId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await 
+    const identifier = userId
+    //
+    await deleteFromCollection(
+        database,
+        getBasketsCollectionName(),
+        { identifier }
+    )
     //
     connection.close()
 }
