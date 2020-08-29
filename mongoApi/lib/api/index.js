@@ -4,10 +4,34 @@ const catalogueMathods = require("./catalogue")
 const collectionMethods = require("./collection")
 const itemMethods = require("./item")
 const stockMethods = require("./stock")
+const { createMongoCollection } = require("../util/operations")
+const { getBasketsCollectionName } = require("../util/misc")
 
-//
+
+/////////////
+/////////////
+
+
+const initialiseCatalogg = (
+    options
+) => {
+    //
+    const { connection, database } = await mongoConnect(options)
+    //Create baskets collection.
+    await createMongoCollection(
+        database, getBasketsCollectionName()
+    )
+    //
+    connection.close()
+}
+
+
+/////////////
+/////////////
+
 
 const allMethods = {
+    initialiseCatalogg,
     ...archetypeMethods,
     ...basketMethods,
     ...catalogueMathods,
@@ -16,7 +40,10 @@ const allMethods = {
     ...stockMethods
 }
 
-//
+
+/////////////
+/////////////
+
 
 const wrapApiMethod = (options, method) => {
     return (...params) => method(options, ...params)
