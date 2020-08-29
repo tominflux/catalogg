@@ -1,6 +1,6 @@
 {
   "name": "@x-logg/catalogg-express-rest",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "lib/api/index.js",
   "directories": {
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/tominflux/catalogg/issues"
   },
-  "homepage": "https://github.com/tominflux/catalogg#readme"
+  "homepage": "https://github.com/tominflux/catalogg#readme",
+  "dependencies": {
+    "@x-logg/util": "^0.1.4"
+  }
 }

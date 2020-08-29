@@ -1,10 +1,31 @@
 const express = require("express")
 const bodyParser = require('body-parser');
 const { serveArchetypeApi } = require("./archetype");
+const { serveBasketApi } = require("./basket");
 const { serveCatalogueApi } = require("./catalogue");
 const { serveCollectionApi } = require("./collection");
 const { serveItemApi } = require("./item");
 const { serveStockApi } = require("./stock");
+
+
+////////////////
+////////////////
+
+
+const postInitialise = async (req, res, next) => {
+    //
+    await req.catalogg.initialiseCatalogg()
+    //
+    res.send()
+}
+
+const serveInitialiseApi = (router) => {
+    router.post("/", postInitialise)
+}
+
+
+////////////////
+////////////////
 
 
 const genCataloggExpressRestApi = (cataloggApi) => {
@@ -16,7 +37,9 @@ const genCataloggExpressRestApi = (cataloggApi) => {
         next()
     })
     //
+    serveInitialiseApi(router)
     serveArchetypeApi(router)
+    serveBasketApi(router)
     serveCatalogueApi(router)
     serveCollectionApi(router)
     serveItemApi(router)
@@ -24,5 +47,10 @@ const genCataloggExpressRestApi = (cataloggApi) => {
     //
     return router
 }
+
+
+////////////////
+////////////////
+
 
 module.exports = genCataloggExpressRestApi
