@@ -1,4 +1,5 @@
 const archetypeMethods = require("./archetype")
+const basketMethods = require("./basket")
 const catalogueMathods = require("./catalogue")
 const collectionMethods = require("./collection")
 const itemMethods = require("./item")
@@ -8,6 +9,7 @@ const stockMethods = require("./stock")
 
 const allMethods = {
     ...archetypeMethods,
+    ...basketMethods,
     ...catalogueMathods,
     ...collectionMethods,
     ...itemMethods,

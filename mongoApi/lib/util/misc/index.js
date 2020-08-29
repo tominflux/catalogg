@@ -24,10 +24,15 @@ const getStocksCollectionName = (
     `catalogg__${catalogueIdentifier}__${collectionIdentifier}__stocks`
 )
 
+const getBasketsCollectionName = () => (
+    `catalogg__baskets`
+)
+
 exports.getArchetypesCollectionName = getArchetypesCollectionName
 exports.getCollectionsCollectionName = getCollectionsCollectionName
 exports.getItemsCollectionName = getItemsCollectionName
 exports.getStocksCollectionName = getStocksCollectionName
+exports.getBasketsCollectionName = getBasketsCollectionName
 
 
 const apiErr = (msg) => new Error(
