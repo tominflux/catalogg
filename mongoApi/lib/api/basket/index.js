@@ -37,13 +37,17 @@ const readBasket = async (
     //
     const identifier = userId
     //
-    const lockedBasket = await findInCollection(
+    const lockedBaskets = await findInCollection(
         database,
         getBasketsCollectionName(),
         { identifier }
     )
     //
     connection.close()
+    //
+    const lockedBasket = (
+        lockedBaskets.length > 0
+    ) ? lockedBaskets[0] : null
     //
     return lockedBasket
 }
