@@ -3,6 +3,7 @@ const basketMethods = require("./basket")
 const catalogueMathods = require("./catalogue")
 const collectionMethods = require("./collection")
 const itemMethods = require("./item")
+const statsMethods = require("./stats")
 const stockMethods = require("./stock")
 const { createMongoCollection } = require("../util/operations")
 const { getBasketsCollectionName } = require("../util/misc")
@@ -37,6 +38,7 @@ const allMethods = {
     ...catalogueMathods,
     ...collectionMethods,
     ...itemMethods,
+    ...statsMethods,
     ...stockMethods
 }
 

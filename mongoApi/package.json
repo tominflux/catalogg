@@ -1,6 +1,6 @@
 {
   "name": "@x-logg/catalogg-mongo",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "",
   "main": "lib/api/index.js",
   "directories": {
@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/tominflux/catalogg#readme",
   "dependencies": {
-    "@x-logg/mongoops": "^0.1.2"
+    "@x-logg/mongoops": "^0.1.5"
   }
 }
