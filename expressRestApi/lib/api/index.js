@@ -5,6 +5,7 @@ const { serveBasketApi } = require("./basket");
 const { serveCatalogueApi } = require("./catalogue");
 const { serveCollectionApi } = require("./collection");
 const { serveItemApi } = require("./item");
+const { serveStatsApi } = require("./stats")
 const { serveStockApi } = require("./stock");
 
 
@@ -43,6 +44,7 @@ const genCataloggExpressRestApi = (cataloggApi) => {
     serveCatalogueApi(router)
     serveCollectionApi(router)
     serveItemApi(router)
+    serveStatsApi(router)
     serveStockApi(router)
     //
     return router
