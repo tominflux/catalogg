@@ -1,6 +1,6 @@
 {
   "name": "catalogg",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Back-end framework for modelling tangible item collections.",
   "main": "lib/api/index.js",
   "dependencies": {
