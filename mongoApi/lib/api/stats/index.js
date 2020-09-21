@@ -12,6 +12,8 @@ const readStatsEntity = async (
 ) => {
     const { connection, database } = await connect(options)
     const stats = await getEntityStats(database, entityType)
+    console.log(entityType)
+    console.log(stats)
     connection.close()
     return stats
 }

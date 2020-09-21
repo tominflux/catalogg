@@ -16,7 +16,8 @@ const getCatalogueNames = async (database) => {
             collectionName.substr(0, 10) === "catalogg__"
         )
         if (isCataloggCollection) {
-            const regex = /__(.+)__/ 
+            const regex = /catalogg__(.+?)__/ 
+            console.log(collectionName)
             const catalogueName = collectionName.match(regex)[1]
             if (
                 catalogueName &&
