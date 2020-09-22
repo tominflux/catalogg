@@ -24,6 +24,10 @@ const getStocksCollectionName = (
     `catalogg__${catalogueIdentifier}__${collectionIdentifier}__stocks`
 )
 
+const getCataloggCollectionName = () => (
+    `catalogg`
+)
+
 const getBasketsCollectionName = () => (
     `catalogg__baskets`
 )
@@ -32,6 +36,7 @@ exports.getArchetypesCollectionName = getArchetypesCollectionName
 exports.getCollectionsCollectionName = getCollectionsCollectionName
 exports.getItemsCollectionName = getItemsCollectionName
 exports.getStocksCollectionName = getStocksCollectionName
+exports.getCataloggCollectionName = getCataloggCollectionName
 exports.getBasketsCollectionName = getBasketsCollectionName
 
 

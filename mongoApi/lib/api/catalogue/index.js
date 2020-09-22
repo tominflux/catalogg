@@ -9,6 +9,8 @@ const {
 } = require("../../util/functions/catalogue")
 const { readCollections } = require("../collection")
 const { deleteItemsCollection, deleteStocksCollection } = require("../../util/functions/collection")
+const { insertIntoCollection, deleteFromCollection } = require("@x-logg/mongoops")
+const { getCataloggCollectionName } = require("../../util/misc")
 
 
 const createCatalogue = async (
@@ -17,6 +19,12 @@ const createCatalogue = async (
     //
     const { connection, database } = await mongoConnect(options)
     //
+    const record = { identifier }
+    await insertIntoCollection(
+        database,
+        getCataloggCollectionName(),
+        [record]
+    )
     await createArchetypesCollection(database, identifier)
     await createCollectionsCollection(database, identifier)
     //
@@ -54,6 +62,13 @@ const deleteCatalogue = async (
     //
     await deleteArchetypesCollection(database, identifier)
     await deleteCollectionsCollection(database, identifier)
+    //Remove catalogue record from catalogg collection.
+    const record = { identifier }
+    await deleteFromCollection(
+        database,
+        getCataloggCollectionName(),
+        record
+    )
     //
     connection.close()
 }

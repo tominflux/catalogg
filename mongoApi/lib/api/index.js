@@ -6,7 +6,7 @@ const itemMethods = require("./item")
 const statsMethods = require("./stats")
 const stockMethods = require("./stock")
 const { createMongoCollection } = require("../util/operations")
-const { getBasketsCollectionName } = require("../util/misc")
+const { getBasketsCollectionName, getCataloggCollectionName } = require("../util/misc")
 
 
 /////////////
@@ -18,6 +18,10 @@ const initialiseCatalogg = async (
 ) => {
     //
     const { connection, database } = await mongoConnect(options)
+    //Create catalogg collection.
+    await createMongoCollection(
+        database, getCataloggCollectionName()
+    )
     //Create baskets collection.
     await createMongoCollection(
         database, getBasketsCollectionName()
