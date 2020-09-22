@@ -1,33 +1,20 @@
 const { 
     createMongoCollection, 
     getMongoCollections,
-    deleteMongoCollection 
-} = require("../../operations")
+    deleteMongoCollection,
+    findInCollection
+} = require("@x-logg/mongoops")
 const {
     getArchetypesCollectionName,
-    getCollectionsCollectionName
+    getCollectionsCollectionName,
+    getCataloggCollectionName
 } = require("../../misc")
 
 const getCatalogueNames = async (database) => {
-    const collectionNames = await getMongoCollections(database)
-    const catalogueNames = []
-    for (const collectionName of collectionNames) {
-        const isCataloggCollection = (
-            collectionName.substr(0, 10) === "catalogg__"
-        )
-        if (isCataloggCollection) {
-            const regex = /catalogg__(.+?)__/ 
-            console.log(collectionName)
-            const catalogueName = collectionName.match(regex)[1]
-            if (
-                catalogueName &&
-                !catalogueNames.includes(catalogueName)
-            ) {
-                catalogueNames.push(catalogueName)
-            }
-        }
-    }
-    return catalogueNames
+    const names = await findInCollection(
+        database, getCataloggCollectionName()
+    )
+    return names
 }
 
 const createArchetypesCollection = async (
