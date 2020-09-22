@@ -21,7 +21,7 @@ const postInitialise = async (req, res, next) => {
 }
 
 const serveInitialiseApi = (router) => {
-    router.post("/", postInitialise)
+    router.post("/catalogg", postInitialise)
 }
 
 
