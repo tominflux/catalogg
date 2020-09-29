@@ -5,7 +5,7 @@ const {
     updateInCollection,
     deleteFromCollection
 } = require("@x-logg/mongoops")
-const { getBasketsCollectionName } = require("../../util/misc")
+const { COLLECTION_NAMES } = require("../../util/collections")
 
 
 ////////////////
@@ -21,7 +21,7 @@ const createBasket = async (
     //
     await insertIntoCollection(
         database,
-        getBasketsCollectionName(),
+        COLLECTION_NAMES.BASKET,
         [ lockedBasket ]
     )
     //
@@ -39,7 +39,7 @@ const readBasket = async (
     //
     const lockedBaskets = await findInCollection(
         database,
-        getBasketsCollectionName(),
+        COLLECTION_NAMES.BASKET,
         { identifier }
     )
     //
@@ -65,7 +65,7 @@ const updateBasket = async (
     //
     await updateInCollection(
         database,
-        getBasketsCollectionName(),
+        COLLECTION_NAMES.BASKET,
         { identifier },
         { properties }
     )
@@ -84,7 +84,7 @@ const deleteBasket = async (
     //
     await deleteFromCollection(
         database,
-        getBasketsCollectionName(),
+        COLLECTION_NAMES.BASKET,
         { identifier }
     )
     //

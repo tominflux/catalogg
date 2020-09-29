@@ -1,73 +1,52 @@
 
-const { mongoConnect } = require("../../util/connect")
-const { 
-    getCatalogueNames,
-    createArchetypesCollection, 
-    createCollectionsCollection, 
-    deleteArchetypesCollection,
-    deleteCollectionsCollection
-} = require("../../util/functions/catalogue")
-const { readCollections } = require("../collection")
-const { deleteItemsCollection, deleteStocksCollection } = require("../../util/functions/collection")
-const { insertIntoCollection, deleteFromCollection } = require("@x-logg/mongoops")
-const { getCataloggCollectionName } = require("../../util/misc")
+const { connect } = require("@x-logg/mongoops")
+const { insertIntoCollection, findInCollection, updateInCollection, deleteFromCollection } = require("../../util/operations")
+const { COLLECTION_NAMES } = require("../../util/collections")
 
 
 const createCatalogue = async (
     options, identifier
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
     const record = { identifier }
     await insertIntoCollection(
         database,
-        getCataloggCollectionName(),
+        COLLECTION_NAMES.CATALOGUE,
         [record]
     )
-    await createArchetypesCollection(database, identifier)
-    await createCollectionsCollection(database, identifier)
     //
     connection.close()
 }
 
-const readCatalogueNames = async (
+const readCatalogues = async (
     options
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    const catalogueNames = await getCatalogueNames(database)
+    const catalogues = await findInCollection(
+        database,
+        COLLECTION_NAMES.CATALOGUE,
+        {}
+    )
     //
     connection.close()
     //
-    return catalogueNames
+    return catalogues
 }
 
 const deleteCatalogue = async (
     options, identifier
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
-    //
-    const collections = await readCollections(options, identifier)
-    for (const collection of collections) {
-        await deleteItemsCollection(
-            database, identifier, collection.identifier
-        )
-        await deleteStocksCollection(
-            database, identifier, collection.identifier
-        )
-    }
-    //
-    await deleteArchetypesCollection(database, identifier)
-    await deleteCollectionsCollection(database, identifier)
+    const { connection, database } = await connect(options)
     //Remove catalogue record from catalogg collection.
-    const record = { identifier }
     await deleteFromCollection(
         database,
-        getCataloggCollectionName(),
-        record
+        COLLECTION_NAMES.CATALOGUE,
+        { identifier }
     )
     //
     connection.close()

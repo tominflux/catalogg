@@ -1,69 +1,65 @@
-const { 
-    getItemFromStocksCollection, 
-    insertIntoStocksCollection, 
-    updateItemInStocksCollection,
-    updateVariationInStocksCollection,
-    deleteFromStocksCollection,
-    getVariationFromStocksCollection
-} = require("../../util/functions/stock")
-const { mongoConnect } = require("../../util/connect")
-const { apiErr } = require("../../util/misc")
 
+const { connect } = require("@x-logg/mongoops")
+const { insertIntoCollection, findInCollection, updateInCollection, deleteFromCollection } = require("../../util/operations")
+const { COLLECTION_NAMES } = require("../../util/collections")
 
 const createStocksForItem = async (
     options,
-    catalogueIdentifier, 
-    collectionIdentifier, 
-    itemIdentifier,
+    catalogueId, 
+    collectionId, 
+    itemId,
     variationObjs
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
-    //Ensure item does not already exist in stocks collection.
-    const stocks = await getItemFromStocksCollection(
-        database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        {}
-    )
-    const alreadyExists = (stocks.length > 0)
-    if (alreadyExists) {
-        //
-        connection.close()
-        //
-        throw apiErr(
-            `Could not create stocks for item "${itemIdentifier}", ` +
-            `already exists.`
+    const { connection, database } = await connect(options)
+    //
+    for (const variationObj of variationObjs) {
+        const record = {
+            catalogueId,
+            collectionId,
+            itemId,
+            ...variationObj,
+            stock: 0
+        }
+        await insertIntoCollection(
+            database,
+            COLLECTION_NAMES.STOCK,
+            [ record ]
         )
     }
-    //
-    await insertIntoStocksCollection(
-        database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        variationObjs
-    )
     //
     connection.close()
 }
 
 const readItemStocks = async (
     options,
-    catalogueIdentifier, 
-    collectionIdentifier, 
-    itemIdentifier
+    catalogueId, 
+    collectionId, 
+    itemId,
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    const stocks = await getItemFromStocksCollection(
+    const query = {
+        catalogueId,
+        collectionId,
+        itemId
+    }
+    //
+    const records = await findInCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier
+        COLLECTION_NAMES.STOCK,
+        query
     )
+    //
+    const stocks = records.map(record => {
+        const {
+            catalogueId,
+            collectionId,
+            ...stock,
+        } = record
+        return stock
+    })
     //
     connection.close()
     //
@@ -72,43 +68,63 @@ const readItemStocks = async (
 
 const readStock = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier,
+    catalogueId, 
+    collectionId, 
+    itemId,
     variationObj
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    const stock = await getVariationFromStocksCollection(
+    const query = {
+        catalogueId,
+        collectionId,
+        itemId,
+        ...variationObj
+    }
+    //
+    const records = await findInCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        variationObj
+        COLLECTION_NAMES.STOCK,
+        query
     )
     //
     connection.close()
+    //
+    if (records.length === 0) {
+        return null
+    }
+    //
+    const {
+        catalogueId,
+        collectionId,
+        ...stock,
+    } = records[0]
     //
     return stock
 }
 
 const updateItemStocks = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier,
+    catalogueId, 
+    collectionId, 
+    itemId,
     stock
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await updateItemInStocksCollection(
+    const query = {
+        catalogueId,
+        collectionId,
+        itemId
+    }
+    //
+    await updateInCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        stock
+        COLLECTION_NAMES.STOCK,
+        query,
+        { stock }
     )
     //
     connection.close()
@@ -116,22 +132,27 @@ const updateItemStocks = async (
 
 const updateStock = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier,
+    catalogueId, 
+    collectionId, 
+    itemId,
     variationObj,
     stock
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await updateVariationInStocksCollection(
+    const query = {
+        catalogueId,
+        collectionId,
+        itemId,
+        ...variationObj
+    }
+    //
+    await updateInCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        variationObj,
-        stock
+        COLLECTION_NAMES.STOCK,
+        query,
+        { stock }
     )
     //
     connection.close()
@@ -139,18 +160,23 @@ const updateStock = async (
 
 const deleteItemStocks = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier
+    catalogueId, 
+    collectionId, 
+    itemId,
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await deleteFromStocksCollection(
+    const query = {
+        catalogueId,
+        collectionId,
+        itemId
+    }
+    //
+    await deleteFromCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier
+        COLLECTION_NAMES.STOCK,
+        query
     )
     //
     connection.close()

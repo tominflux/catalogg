@@ -1,58 +1,30 @@
-const { getCatalogueNames } = require("../functions/catalogue")
-const { getCollectionsCollectionName, getItemsCollectionName } = require("../misc")
-const { countInCollection, findInCollection } = require("@x-logg/mongoops")
+const { apiErr } = require("../misc")
+const { countInCollection } = require("@x-logg/mongoops")
+const { COLLECTION_NAMES } = require("../collections")
 
 
-const getCatalogueCount = async (database) => {
-    const names = await getCatalogueNames(database)
-    const count = names.length
-    return count
+/////////////
+/////////////
+
+
+const getCollectionName = (entityType) => {
+    switch (entityType) {
+        case ENTITY_TYPE.CATALOGUE:
+            return COLLECTION_NAMES.CATALOGUE
+        case ENTITY_TYPE.COLLECTION:
+            return COLLECTION_NAMES.COLLECTION
+        case ENTITY_TYPE.ITEM:
+            return COLLECTION_NAMES.ITEM
+        default:
+            throw apiErr(
+                `Unknown entity type "${entityType}".`
+            )
+    }
 }
 
-const getCollectionCount = async (database) => {
-    const catalogueIdentifiers = await getCatalogueNames(database)
-    let count = 0
-    for (const name of catalogueIdentifiers) {
-        const catalogueIdentifier = name
-        const collectionsCollectionName = getCollectionsCollectionName(
-            catalogueIdentifier
-        )
-        //
-        const collectionCount = await countInCollection(
-            database,
-            collectionsCollectionName
-        )
-        count += collectionCount
-    }
-    //
-    return count
-}
-
-const getItemCount = async (database) => {
-    const catalogueIdentifiers = await getCatalogueNames(database)
-    let count = 0
-    for (const name of catalogueIdentifiers) {
-        const catalogueIdentifier = name
-        const collectionsCollection = getCollectionsCollectionName(
-            catalogueIdentifier
-        )
-        //
-        const collectionIdentifiers = await findInCollection(
-            database,
-            collectionsCollection
-        )
-        //
-        for (const collectionIdentifier of collectionIdentifiers) {
-            const itemCollection = getItemsCollectionName(
-                catalogueIdentifier, collectionIdentifier
-            )
-            const itemCount = await countInCollection(
-                database, itemCollection
-            )
-            count += itemCount
-        }
-    }
-    //
+const getEntityCount = async (database, entityType) => {
+    const collectionName = getCollectionName(entityType)
+    const count = await countInCollection(database, collectionName, {})
     return count
 }
 
@@ -62,21 +34,21 @@ const getItemCount = async (database) => {
 
 
 const getCatalogueStats = async (database) => {
-    const count = await getCatalogueCount(database)
+    const count = await getEntityCount(database, ENTITY_TYPE.CATALOGUE)
     return {
         count
     }
 }
 
 const getCollectionStats = async (database) => {
-    const count = await getCollectionCount(database)
+    const count = await getEntityCount(database, ENTITY_TYPE.COLLECTION)
     return {
         count
     }
 }
 
 const getItemStats = async (database) => {
-    const count = getItemCount(database)
+    const count = await getEntityCount(database, ENTITY_TYPE.ITEM)
     return {
         count
     }

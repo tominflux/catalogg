@@ -1,31 +1,26 @@
-const { 
-    insertIntoCollectionsCollection, 
-    getAllFromCollectionsCollection, 
-    deleteFromCollectionsCollection, 
-    createItemsCollection, 
-    deleteItemsCollection, 
-    createStocksCollection,
-    deleteStocksCollection
-} = require("../../util/functions/collection")
-const { mongoConnect } = require("../../util/connect")
 
+const { connect } = require("@x-logg/mongoops")
+const { insertIntoCollection, findInCollection, updateInCollection, deleteFromCollection } = require("../../util/operations")
+const { COLLECTION_NAMES } = require("../../util/collections")
 
 const createCollection = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier
+    catalogueId,
+    collectionId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await insertIntoCollectionsCollection(
-        database, catalogueIdentifier, collectionIdentifier
-    )
-    await createItemsCollection(
-        database, catalogueIdentifier, collectionIdentifier
-    )
-    await createStocksCollection(
-        database, catalogueIdentifier, collectionIdentifier
+    const identifier = collectionId
+    //
+    const record = { 
+        catalogueId,
+        identifier 
+    }
+    await insertIntoCollection(
+        database,
+        COLLECTION_NAMES.COLLECTION,
+        [record]
     )
     //
     connection.close()
@@ -33,13 +28,15 @@ const createCollection = async (
 
 const readCollections = async (
     options,
-    catalogueIdentifier
+    catalogueId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    const collections = await getAllFromCollectionsCollection(
-        database, catalogueIdentifier
+    const collections = await findInCollection(
+        database,
+        COLLECTION_NAMES.COLLECTION,
+        { catalogueId }
     )
     //
     connection.close()
@@ -49,20 +46,18 @@ const readCollections = async (
 
 const deleteCollection = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier
+    catalogueId,
+    collectionId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await deleteFromCollectionsCollection(
-        database, catalogueIdentifier, collectionIdentifier
-    )
-    await deleteItemsCollection(
-        database, catalogueIdentifier, collectionIdentifier
-    )
-    await deleteStocksCollection(
-        database, catalogueIdentifier, collectionIdentifier
+    const identifier = collectionId
+    //
+    await deleteFromCollection(
+        database,
+        COLLECTION_NAMES.COLLECTION,
+        { catalogueId, identifier }
     )
     //
     connection.close()

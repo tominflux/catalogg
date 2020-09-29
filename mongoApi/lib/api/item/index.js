@@ -1,47 +1,26 @@
-const {
-    insertIntoItemsCollection, 
-    findInItemsCollection,
-    getFromItemsCollection,
-    updateInItemsCollection,
-    deleteFromItemsCollection
-} = require("../../util/functions/item")
-const { mongoConnect } = require("../../util/connect")
-const { apiErr } = require("../../util/misc")
+const { connect } = require("@x-logg/mongoops")
+const { insertIntoCollection, findInCollection, updateInCollection, deleteFromCollection } = require("../../util/operations")
+const { COLLECTION_NAMES } = require("../../util/collections")
 
 const createItem = async (
     options,
-    catalogueIdentifier, 
-    collectionIdentifier, 
+    catalogueId, 
+    collectionId, 
     lockedItem
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
-    /*
-    //Ensure item does not already exist.
-    const item = await getFromItemsCollection(
-        database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        lockedItem.identifier
-    )
-    const alreadyExists = (item !== null)
-    if (alreadyExists) {
-        //
-        connection.close()
-        //
-        console.log(lockedItem.identifier)
-        throw apiErr(
-            `Could not create item "${lockedItem.identifier}", ` +
-            `already exists.`
-        )
-    }
-    */
+    const { connection, database } = await connect(options)
     //
-    await insertIntoItemsCollection(
+    const record = {
+        catalogueId,
+        collectionId,
+        ...lockedItem
+    }
+    //
+    await insertIntoCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        lockedItem
+        COLLECTION_NAMES.ITEM,
+        [record]
     )
     //
     connection.close()
@@ -49,63 +28,116 @@ const createItem = async (
 
 const readItems = async (
     options,
-    catalogueIdentifier, 
-    collectionIdentifier, 
-    propertyFilter 
+    catalogueId, 
+    collectionId, 
+    archetypeId=null,
+    propertyFilter={}
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
+    //Start building query
+    let query = { catalogueId, collectionId}
+    //Add archetype ID if given
+    if (archetypeId) {
+        query = {
+            ...query,
+            archetypeId
+        }
+    }
+    //Add all fields in property filter.
+    for (const key in propertyFilter) {
+        const queryKey = `properties.${key}`
+        const queryValue = propertyFilter[key]
+        query = {
+            ...query,
+            [queryKey]: queryValue
+        }
+    }
     //
-    const items = await findInItemsCollection(
+    const records = await findInCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        propertyFilter
+        COLLECTION_NAMES.ITEM,
+        query
     )
     //
     connection.close()
     //
-    return items
+    const lockedItems = records.map(record  => {
+        const { 
+            ...lockedItem, 
+            catalogueId, 
+            collectionId 
+        } = record
+        return lockedItem
+    })
+    //
+    return lockedItems
 }
 
 const readItem = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier
+    catalogueId,
+    collectionId,
+    itemId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    const item = await getFromItemsCollection(
+    const identifier = itemId
+    //
+    const query = {
+        catalogueId,
+        collectionId,
+        identifier
+    }
+    //
+    const records = await findInCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier
+        COLLECTION_NAMES.ITEM,
+        query
     )
     //
     connection.close()
     //
-    return item
+    if (records.length === 0) {
+        return null
+    }
+    //
+    const getLockedItem = () => {
+        const { 
+            ...lockedItem, 
+            catalogueId, 
+            collectionId 
+        } = records[0]
+        return lockedItem
+    }
+    //
+    return getLockedItem()
 }
 
 
 const updateItem = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier,
-    newProperties
+    catalogueId,
+    collectionId,
+    lockedItem
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await updateInItemsCollection(
+    const { identifier, properties } = lockedItem
+    //
+    const query = {
+        catalogueId,
+        collectionId,
+        identifier
+    }
+    //
+    await updateInCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier,
-        newProperties
+        COLLECTION_NAMES.ITEM,
+        query,
+        { properties }
     )
     //
     connection.close()
@@ -113,18 +145,25 @@ const updateItem = async (
 
 const deleteItem = async (
     options,
-    catalogueIdentifier,
-    collectionIdentifier,
-    itemIdentifier
+    catalogueId,
+    collectionId,
+    itemId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    await deleteFromItemsCollection(
+    const identifier = itemId
+    //
+    const query = {
+        catalogueId,
+        collectionId,
+        identifier
+    }
+    //
+    await deleteFromCollection(
         database,
-        catalogueIdentifier,
-        collectionIdentifier,
-        itemIdentifier
+        COLLECTION_NAMES.ITEM,
+        query
     )
     //
     connection.close()

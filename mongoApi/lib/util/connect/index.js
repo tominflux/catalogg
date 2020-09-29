@@ -1,6 +1,6 @@
 const mongoClient = require("mongodb").MongoClient
 
-const mongoConnect = (options) => (
+const connect = (options) => (
     new Promise(
         (resolve, reject) => {
             console.log("Connecting to MongoDB database...")
@@ -22,4 +22,4 @@ const mongoConnect = (options) => (
     )
 )
 
-exports.mongoConnect = mongoConnect
+exports.connect = connect

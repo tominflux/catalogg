@@ -1,64 +1,91 @@
-const { createArchetype: _createArchetype } = require("aarketype")
-const { mongoConnect } = require("../../util/connect")
-const { 
-    insertIntoArchetypesCollection, 
-    getAllFromArchetypesCollection, 
-    findInArchetypesCollection, 
-    deleteFromArchetypesCollection 
-} = require("../../util/functions/archetype")
 
+const { connect } = require("@x-logg/mongoops")
+const { insertIntoCollection, findInCollection, deleteFromCollection } = require("../../util/operations")
+const { COLLECTION_NAMES } = require("../../util/collections")
 
 const createArchetype = async (
-    options, catalogueIdentifier, archetype
+    options, catalogueId, lockedArchetype
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
+    //Attach catalogue ID to record.
+    const record = {
+        catalogueId,
+        ...lockedArchetype
+    }
     //
-    await insertIntoArchetypesCollection(
-        database, catalogueIdentifier, archetype
+    await insertIntoCollection(
+        database,
+        COLLECTION_NAMES.ARCHETYPE,
+        [record]
     )
     //
     connection.close()
 }
 
 const readArchetypes = async (
-    options, catalogueIdentifier
+    options, 
+    catalogueId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    const archetypes = await getAllFromArchetypesCollection(
-        database, catalogueIdentifier
+    const records = await findInCollection(
+        database, 
+        COLLECTION_NAMES.ARCHETYPE,
+        { catalogueId }
     )
     //
     connection.close()
+    //Remove catalogue id from records.
+    const lockedArchetypes = records.map(record => {
+        const { ...lockedArchetype, catalogueId } = record
+        return lockedArchetype
+    })
     //
-    return archetypes
+    return lockedArchetypes
 }
 
 const readArchetype = async (
-    options, catalogueIdentifier, archetypeIdentifier
+    options, 
+    catalogueId, 
+    archetypeId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    const archetype = findInArchetypesCollection(
-        database, catalogueIdentifier, archetypeIdentifier
+    const identifier = archetypeId
+    //
+    const records = await findInCollection(
+        database, 
+        COLLECTION_NAMES.ARCHETYPE,
+        { catalogueId, identifier }
     )
     //
     connection.close()
     //
-    return archetype
+    if (records.length === 0) {
+        return null
+    }
+    const { ...lockedArchetype, catalogueId } = records[0]
+    //
+    return lockedArchetype
 }
 
 const deleteArchetype = async (
-    options, catalogueIdentifier, archetypeIdentifier
+    options, 
+    catalogueId, 
+    archetypeId
 ) => {
     //
-    const { connection, database } = await mongoConnect(options)
+    const { connection, database } = await connect(options)
     //
-    deleteFromArchetypesCollection(
-        database, catalogueIdentifier, archetypeIdentifier
+    const identifier = archetypeId
+    //
+    deleteFromCollection(
+        database, 
+        COLLECTION_NAMES.ARCHETYPE,
+        { catalogueId, identifier }
     )
     //
     connection.close()

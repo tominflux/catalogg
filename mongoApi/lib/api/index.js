@@ -7,29 +7,39 @@ const statsMethods = require("./stats")
 const stockMethods = require("./stock")
 const { getBasketsCollectionName, getCataloggCollectionName } = require("../util/misc")
 const { connect, createMongoCollection } = require("@x-logg/mongoops")
+const { COLLECTION_NAMES } = require("../util/collections")
+const { deleteMongoCollection } = require("../util/operations")
 
 
 /////////////
 /////////////
 
 
-const initialiseCatalogg = async (
-    options
-) => {
+const initialiseCatalogg = async (options) => {
     //
     const { connection, database } = await connect(options)
-    //Create catalogg collection.
-    await createMongoCollection(
-        database, getCataloggCollectionName()
-    )
-    //Create baskets collection.
-    await createMongoCollection(
-        database, getBasketsCollectionName()
-    )
+    //Create all catalogg collections.
+    for (const collectionName of COLLECTION_NAMES) {
+        await createMongoCollection(
+            database, collectionName
+        )
+    }
     //
     connection.close()
 }
 
+const destroyCatalogg = async (options) => {
+    //
+    const { connection, database } = await connect(options)
+    //Create all catalogg collections.
+    for (const collectionName of COLLECTION_NAMES) {
+        await deleteMongoCollection(
+            database, collectionName
+        )
+    }
+    //
+    connection.close()
+}
 
 /////////////
 /////////////
