@@ -66,7 +66,7 @@ const readItems = async (
         const { 
             catalogueId, 
             collectionId,
-            ...lockedItem, 
+            ...lockedItem
         } = record
         return lockedItem
     })
@@ -107,7 +107,7 @@ const readItem = async (
         const { 
             catalogueId, 
             collectionId,
-            ...lockedItem, 
+            ...lockedItem
         } = records[0]
         return lockedItem
     }
