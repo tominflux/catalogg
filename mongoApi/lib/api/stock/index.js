@@ -95,13 +95,16 @@ const readStock = async (
         return null
     }
     //
-    const {
-        catalogueId,
-        collectionId,
-        ...stock
-    } = records[0]
+    const getStock = () => {
+        const {
+            catalogueId,
+            collectionId,
+            ...stock
+        } = records[0]
+        return stock
+    }
     //
-    return stock
+    return getStock()
 }
 
 const updateItemStocks = async (
