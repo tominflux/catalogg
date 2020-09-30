@@ -35,12 +35,13 @@ const putStocks = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
     const itemIdentifier = req.params.itmId
+    const stock = req.body.stock
     //
     await req.catalogg.updateItemStocks(
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
-        req.body.stock
+        stock
     )
     //
     res.send()
@@ -53,13 +54,14 @@ const putStock = async (req, res, next) => {
     const itemIdentifier = req.params.itmId
     //
     const variationObj = req.query
+    const stock = req.body.stock
     //
     await req.catalogg.updateStock(
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
         variationObj,
-        req.body.stock
+        stock
     )
     //
     res.send()

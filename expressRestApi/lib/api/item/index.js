@@ -1,4 +1,3 @@
-const { createItem } = require("aarketype")
 
 
 /////////////////
@@ -10,22 +9,16 @@ const postItem = async (req, res, next) => {
     const collectionIdentifier = req.params.colId
     const archetypeIdentifier = req.body.archetypeId
     const itemIdentifier = req.params.itmId
-    //
-    const archetype = await req.catalogg.readArchetype(
-        catalogueIdentifier, archetypeIdentifier
-    )
-    //
-    const item = createItem(
-        archetype,
-        itemIdentifier,
-        req.body.properties,
-        req.body.variationFactors
-    )
+    const properties = req.body.properties
+    const variationFactors = req.body.variationFactors
     //
     await req.catalogg.createItem(
         catalogueIdentifier,
         collectionIdentifier,
-        item
+        archetypeIdentifier,
+        itemIdentifier,
+        properties,
+        variationFactors
     )
     //
     res.send()
@@ -34,14 +27,15 @@ const postItem = async (req, res, next) => {
 const getItems = async (req, res, next) => {
     const catalogueIdentifier = req.params.catId
     const collectionIdentifier = req.params.colId
-    const propertyFilter = (
-        (req.body.properties) ? 
-            req.body.properties : {}
-    )
+    const archetypeId = req.body.archetypeId ? 
+        req.body.archetypeId : null
+    const propertyFilter = req.body.properties ? 
+        req.body.properties : {}
     //
     const items = await req.catalogg.readItems(
         catalogueIdentifier,
         collectionIdentifier,
+        archetypeId,
         propertyFilter
     )
     //
@@ -68,12 +62,14 @@ const putItem = async (req, res, next) => {
     const itemIdentifier = req.params.itmId
     //
     const newProperties = req.body.properties
+    const newVariationFactors = req.body.variationFactors
     //
     req.catalogg.updateItem(
         catalogueIdentifier,
         collectionIdentifier,
         itemIdentifier,
-        newProperties
+        newProperties,
+        newVariationFactors
     )
     //
     res.send()
