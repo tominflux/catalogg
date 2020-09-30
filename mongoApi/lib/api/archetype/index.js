@@ -67,9 +67,13 @@ const readArchetype = async (
     if (records.length === 0) {
         return null
     }
-    const { catalogueId, ...lockedArchetype } = records[0]
     //
-    return lockedArchetype
+    const getLockedArchetype = () => {
+        const { catalogueId, ...lockedArchetype } = records[0]
+        return lockedArchetype
+    }
+    //
+    return getLockedArchetype()
 }
 
 const deleteArchetype = async (
