@@ -54,5 +54,5 @@ const deleteCatalogue = async (
 
 
 exports.createCatalogue = createCatalogue
-exports.readCatalogueNames = readCatalogueNames
+exports.readCatalogues = readCatalogues
 exports.deleteCatalogue = deleteCatalogue

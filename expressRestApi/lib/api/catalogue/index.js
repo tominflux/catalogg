@@ -9,9 +9,9 @@ const postCatalogue = async (req, res, next) => {
 }
 
 const getCatalogues = async (req, res, next) => {
-    const catalogueNames = await req.catalogg.readCatalogueNames()
+    const catalogues = await req.catalogg.readCatalogues()
     //
-    res.json(catalogueNames)
+    res.json(catalogues)
 }
 
 const putCatalogue = async (req, res, next) => {
