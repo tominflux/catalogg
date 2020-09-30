@@ -23,7 +23,7 @@ const insertIntoStocksCollection = async (
         const document = {
             itemIdentifier,
             stock: 0,
-            ...variationObj,
+            ...variationObj
         }
         await insertIntoCollection(
             database,

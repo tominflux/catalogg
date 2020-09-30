@@ -41,7 +41,7 @@ const readItems = async (
     if (archetypeId) {
         query = {
             archetypeId,
-            ...query,
+            ...query
         }
     }
     //Add all fields in property filter.
@@ -50,7 +50,7 @@ const readItems = async (
         const queryValue = propertyFilter[key]
         query = {
             [queryKey]: queryValue,
-            ...query,
+            ...query
         }
     }
     //

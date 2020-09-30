@@ -19,7 +19,7 @@ const createStocksForItem = async (
             collectionId,
             itemId,
             stock: 0,
-            ...variationObj,
+            ...variationObj
         }
         await insertIntoCollection(
             database,
@@ -56,7 +56,7 @@ const readItemStocks = async (
         const {
             catalogueId,
             collectionId,
-            ...stock,
+            ...stock
         } = record
         return stock
     })
@@ -98,7 +98,7 @@ const readStock = async (
     const {
         catalogueId,
         collectionId,
-        ...stock,
+        ...stock
     } = records[0]
     //
     return stock
