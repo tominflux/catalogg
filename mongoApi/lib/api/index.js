@@ -17,7 +17,8 @@ const initialiseCatalogg = async (options) => {
     //
     const { connection, database } = await connect(options)
     //Create all catalogg collections.
-    for (const collectionName of COLLECTION_NAMES) {
+    for (const key in COLLECTION_NAMES) {
+        const collectionName = COLLECTION_NAMES[key]
         await createMongoCollection(
             database, collectionName
         )
