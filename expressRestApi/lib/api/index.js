@@ -13,7 +13,7 @@ const { serveStockApi } = require("./stock");
 ////////////////
 
 
-const postInitialise = async (req, res, next) => {
+const postInitialise = async (req, res) => {
     //
     await req.catalogg.initialiseCatalogg()
     //

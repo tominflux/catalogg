@@ -45,6 +45,7 @@ const destroyCatalogg = async (options) => {
 
 const allMethods = {
     initialiseCatalogg,
+    destroyCatalogg,
     ...archetypeMethods,
     ...basketMethods,
     ...catalogueMathods,
