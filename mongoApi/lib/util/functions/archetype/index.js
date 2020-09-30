@@ -3,7 +3,7 @@ const {
     insertIntoCollection, 
     findInCollection, 
     deleteFromCollection 
-} = require("../../operations")
+} = require("@x-logg/mongoops")
 
 
 const insertIntoArchetypesCollection = async (

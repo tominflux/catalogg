@@ -5,10 +5,8 @@ const collectionMethods = require("./collection")
 const itemMethods = require("./item")
 const statsMethods = require("./stats")
 const stockMethods = require("./stock")
-const { getBasketsCollectionName, getCataloggCollectionName } = require("../util/misc")
-const { connect, createMongoCollection } = require("@x-logg/mongoops")
+const { connect, createMongoCollection, deleteMongoCollection } = require("@x-logg/mongoops")
 const { COLLECTION_NAMES } = require("../util/collections")
-const { deleteMongoCollection } = require("../util/operations")
 
 
 /////////////

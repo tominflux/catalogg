@@ -6,7 +6,7 @@ const {
     insertIntoCollection,
     updateInCollection,
     deleteFromCollection
-} = require("../../operations")
+} = require("@x-logg/mongoops")
 
 const insertIntoStocksCollection = async (
     database,

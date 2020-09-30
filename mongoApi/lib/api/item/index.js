@@ -1,5 +1,5 @@
 const { connect } = require("@x-logg/mongoops")
-const { insertIntoCollection, findInCollection, updateInCollection, deleteFromCollection } = require("../../util/operations")
+const { insertIntoCollection, findInCollection, updateInCollection, deleteFromCollection } = require("@x-logg/mongoops")
 const { COLLECTION_NAMES } = require("../../util/collections")
 
 const createItem = async (

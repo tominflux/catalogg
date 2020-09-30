@@ -9,7 +9,7 @@ const {
     deleteFromCollection,
     createMongoCollection,
     deleteMongoCollection
-} = require("../../operations")
+} = require("@x-logg/mongoops")
 
 
 const insertIntoCollectionsCollection = async (
