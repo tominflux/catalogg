@@ -1,6 +1,5 @@
 
-
-const postCatalogue = async (req, res, next) => {
+const postCatalogue = async (req, res) => {
     const catalogueIdentifier = req.params.catId
     //
     await req.catalogg.createCatalogue(catalogueIdentifier)
@@ -8,13 +7,13 @@ const postCatalogue = async (req, res, next) => {
     res.send()
 }
 
-const getCatalogues = async (req, res, next) => {
+const getCatalogues = async (req, res) => {
     const catalogues = await req.catalogg.readCatalogues()
     //
     res.json(catalogues)
 }
 
-const putCatalogue = async (req, res, next) => {
+const putCatalogue = async (req, res) => {
     const catalogueIdentifier = req.params.catId
     const newIdentifier = req.body.identifier
     //
@@ -25,7 +24,7 @@ const putCatalogue = async (req, res, next) => {
     res.send()
 }
 
-const deleteCatalogue = async (req, res, next) => {
+const deleteCatalogue = async (req, res) => {
     const catalogueIdentifier = req.params.catId
     //
     await req.catalogg.deleteCatalogue(catalogueIdentifier)

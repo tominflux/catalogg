@@ -1,6 +1,6 @@
 
 const { connect } = require("@x-logg/mongoops")
-const { insertIntoCollection, findInCollection, updateInCollection, deleteFromCollection } = require("@x-logg/mongoops")
+const { insertIntoCollection, findInCollection, deleteFromCollection } = require("@x-logg/mongoops")
 const { COLLECTION_NAMES } = require("../../util/collections")
 
 
