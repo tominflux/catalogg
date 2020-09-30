@@ -40,8 +40,8 @@ const readItems = async (
     //Add archetype ID if given
     if (archetypeId) {
         query = {
+            archetypeId,
             ...query,
-            archetypeId
         }
     }
     //Add all fields in property filter.
@@ -49,8 +49,8 @@ const readItems = async (
         const queryKey = `properties.${key}`
         const queryValue = propertyFilter[key]
         query = {
+            [queryKey]: queryValue,
             ...query,
-            [queryKey]: queryValue
         }
     }
     //
@@ -64,9 +64,9 @@ const readItems = async (
     //
     const lockedItems = records.map(record  => {
         const { 
-            ...lockedItem, 
             catalogueId, 
-            collectionId 
+            collectionId,
+            ...lockedItem, 
         } = record
         return lockedItem
     })
@@ -105,9 +105,9 @@ const readItem = async (
     //
     const getLockedItem = () => {
         const { 
-            ...lockedItem, 
             catalogueId, 
-            collectionId 
+            collectionId,
+            ...lockedItem, 
         } = records[0]
         return lockedItem
     }

@@ -39,7 +39,7 @@ const readArchetypes = async (
     connection.close()
     //Remove catalogue id from records.
     const lockedArchetypes = records.map(record => {
-        const { ...lockedArchetype, catalogueId } = record
+        const { catalogueId, ...lockedArchetype } = record
         return lockedArchetype
     })
     //
@@ -67,7 +67,7 @@ const readArchetype = async (
     if (records.length === 0) {
         return null
     }
-    const { ...lockedArchetype, catalogueId } = records[0]
+    const { catalogueId, ...lockedArchetype } = records[0]
     //
     return lockedArchetype
 }

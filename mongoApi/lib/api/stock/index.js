@@ -18,8 +18,8 @@ const createStocksForItem = async (
             catalogueId,
             collectionId,
             itemId,
+            stock: 0,
             ...variationObj,
-            stock: 0
         }
         await insertIntoCollection(
             database,

@@ -22,8 +22,8 @@ const insertIntoStocksCollection = async (
     for (const variationObj of variationObjs) {
         const document = {
             itemIdentifier,
+            stock: 0,
             ...variationObj,
-            stock: 0
         }
         await insertIntoCollection(
             database,
