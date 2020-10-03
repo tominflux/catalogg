@@ -26,10 +26,14 @@ const readCatalogues = async (
     //
     const { connection, database } = await connect(options)
     //
-    const catalogues = await findInCollection(
+    const records = await findInCollection(
         database,
         COLLECTION_NAMES.CATALOGUE,
         {}
+    )
+    //
+    const catalogues = records.map(
+        record => record.identifier
     )
     //
     connection.close()
