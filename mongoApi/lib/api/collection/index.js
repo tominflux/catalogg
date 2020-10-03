@@ -13,9 +13,9 @@ const createCollection = async (
     //
     const identifier = collectionId
     //
-    const record = { 
+    const record = {
         catalogueId,
-        identifier 
+        identifier
     }
     await insertIntoCollection(
         database,
@@ -33,13 +33,17 @@ const readCollections = async (
     //
     const { connection, database } = await connect(options)
     //
-    const collections = await findInCollection(
+    const records = await findInCollection(
         database,
         COLLECTION_NAMES.COLLECTION,
         { catalogueId }
     )
     //
     connection.close()
+    //
+    const collections = records.map(
+        record => record.identifier
+    )
     //
     return collections
 }
