@@ -4,8 +4,8 @@ const { COLLECTION_NAMES } = require("../../util/collections")
 
 const createItem = async (
     options,
-    catalogueId, 
-    collectionId, 
+    catalogueId,
+    collectionId,
     lockedItem
 ) => {
     //
@@ -28,15 +28,15 @@ const createItem = async (
 
 const readItems = async (
     options,
-    catalogueId, 
-    collectionId, 
-    archetypeId=null,
-    propertyFilter={}
+    catalogueId,
+    collectionId,
+    archetypeId = null,
+    propertyFilter = {}
 ) => {
     //
     const { connection, database } = await connect(options)
     //Start building query
-    let query = { catalogueId, collectionId}
+    let query = { catalogueId, collectionId }
     //Add archetype ID if given
     if (archetypeId) {
         query = {
@@ -62,9 +62,9 @@ const readItems = async (
     //
     connection.close()
     //
-    const lockedItems = records.map(record  => {
-        const { 
-            catalogueId, 
+    const lockedItems = records.map(record => {
+        const {
+            catalogueId,
             collectionId,
             ...lockedItem
         } = record
@@ -104,8 +104,8 @@ const readItem = async (
     }
     //
     const getLockedItem = () => {
-        const { 
-            catalogueId, 
+        const {
+            catalogueId,
             collectionId,
             ...lockedItem
         } = records[0]

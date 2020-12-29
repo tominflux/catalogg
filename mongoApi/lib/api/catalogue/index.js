@@ -46,7 +46,7 @@ const deleteCatalogue = async (
 ) => {
     //
     const { connection, database } = await connect(options)
-    //Remove catalogue record from catalogg collection.
+    // Remove catalogue record from catalogg collection.
     await deleteFromCollection(
         database,
         COLLECTION_NAMES.CATALOGUE,

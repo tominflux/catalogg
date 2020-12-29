@@ -16,7 +16,7 @@ const { COLLECTION_NAMES } = require("../util/collections")
 const initialiseCatalogg = async (options) => {
     //
     const { connection, database } = await connect(options)
-    //Create all catalogg collections.
+    // Create all catalogg collections.
     for (const key in COLLECTION_NAMES) {
         const collectionName = COLLECTION_NAMES[key]
         await createMongoCollection(
@@ -30,7 +30,7 @@ const initialiseCatalogg = async (options) => {
 const destroyCatalogg = async (options) => {
     //
     const { connection, database } = await connect(options)
-    //Create all catalogg collections.
+    // Delete all catalogg collections.
     for (const collectionName of COLLECTION_NAMES) {
         await deleteMongoCollection(
             database, collectionName
@@ -75,7 +75,7 @@ const wrapAllMethods = (options, objOfMethods) => {
             [key]: wrappedMethod
         }
     }
-    return {...objOfWrappedMethods}
+    return { ...objOfWrappedMethods }
 }
 
 //
